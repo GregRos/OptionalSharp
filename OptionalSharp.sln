@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionalSharp", "OptionalSharp\OptionalSharp.csproj", "{5C0C6C6C-CDB7-46FC-8495-3D8154184F75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionalSharp.Linq", "OptionalSharp.Linq\OptionalSharp.Linq.csproj", "{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5C0C6C6C-CDB7-46FC-8495-3D8154184F75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C0C6C6C-CDB7-46FC-8495-3D8154184F75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C0C6C6C-CDB7-46FC-8495-3D8154184F75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C0C6C6C-CDB7-46FC-8495-3D8154184F75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

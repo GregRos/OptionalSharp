@@ -1,12 +1,13 @@
 namespace OptionalSharp {
 	public partial struct Optional<T> {
+		internal const int NoneHashCode = 0;
 		/// <summary>
 		/// Determines if this optional value is equal to another optional value, where the underlying value type of the second optional value is unknown.
 		/// </summary>
 		/// <param name="other">The other optional value.</param>
 		/// <returns></returns>
 		public bool Equals(IAnyOptional other) {
-			return (!Exists && !other.Exists) || (Exists && other.Exists && Equals(Value, other.Value));
+			return (!HasValue && !other.HasValue) || (HasValue && other.HasValue && Equals(Value, other.Value));
 		}
 
 		/// <summary>
@@ -16,7 +17,7 @@ namespace OptionalSharp {
 		/// <param name="other">The other optional value.</param>
 		/// <returns></returns>
 		public bool Equals<T2>(Optional<T2> other) {
-			return !Exists ? !other.Exists : Exists && other.Exists && Equals(Value, other.Value);
+			return !HasValue ? !other.HasValue : HasValue && other.HasValue && Equals(Value, other.Value);
 		}
 
 		/// <summary>
@@ -27,8 +28,16 @@ namespace OptionalSharp {
 		///     <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
 		/// </returns>
 		public override bool Equals(object obj) {
-			return obj is Optional<T>
-				? Equals((Optional<T>) obj) : obj is IAnyOptional ? Equals((IAnyOptional) obj) : Exists && Equals(Value, obj);
+			switch (obj) {
+				case Optional<T> opt:
+					return Equals(opt);
+				case null:
+					goto default;
+				case IAnyOptional opt:
+					return Equals((IAnyOptional) obj);
+				default:
+					return HasValue && Equals(Value, obj);
+			}
 		}
 
 		/// <summary>
@@ -39,7 +48,7 @@ namespace OptionalSharp {
 		/// true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
 		/// </returns>
 		public bool Equals(T other) {
-			return Exists && _eq.Equals(Value, other);
+			return HasValue && _eq.Equals(Value, other);
 		}
 
 		/// <summary>
@@ -47,14 +56,14 @@ namespace OptionalSharp {
 		/// </summary>
 		/// <param name="other">An object to compare with this object.</param>
 		public bool Equals(Optional<T> other) {
-			return !other.Exists ? !Exists : Equals(other.Value);
+			return !other.HasValue ? !HasValue : Equals(other.Value);
 		}
 
 		/// <summary>
 		///     Returns a hash code for this optional value instance. If it has an underlying value, the hash code of the underlying value is returned. Otherwise, a hash code of 0 is returned.
 		/// </summary>
 		public override int GetHashCode() {
-			return !Exists ? NoneHashCode : _eq.GetHashCode(Value);
+			return !HasValue ? NoneHashCode : _eq.GetHashCode(Value);
 		}
 	}
 }

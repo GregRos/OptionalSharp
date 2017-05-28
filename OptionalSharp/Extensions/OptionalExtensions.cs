@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using System.Xml.Schema;
 namespace OptionalSharp {
 	/// <summary>
 	///     Static class with utility and extension methods for optional values.
 	/// </summary>
 	public static class OptionalExtensions {
 
-		public static Optional<T> MakeSome<T>(this T @this) {
+		public static Optional<T> AsOptionalSome<T>(this T @this) {
 			return new Optional<T>(@this);
 		}
 
@@ -32,7 +31,7 @@ namespace OptionalSharp {
 		/// <typeparam name="T">The type of the value.</typeparam>
 		/// <param name="x">The value.</param>
 		/// <returns></returns>
-		public static Optional<T> AsOptional<T>(this T x) => x != null ? x.MakeSome() : Optional.None;
+		public static Optional<T> AsOptional<T>(this T x) => x != null ? x.AsOptionalSome() : Optional.None;
 
 		/// <summary>
 		///     Returns the underlying value of the optional value instance, or throws an exception if none exists.
@@ -42,7 +41,7 @@ namespace OptionalSharp {
 		/// <param name="ex"></param>
 		/// <returns></returns>
 		public static T ValueOrError<T>(this Optional<T> opt, Exception ex) {
-			if (!opt.Exists) throw ex;
+			if (!opt.HasValue) throw ex;
 			return opt.Value;
 		}
 
@@ -78,7 +77,7 @@ namespace OptionalSharp {
 		public static int CompareTo<T>(this Optional<T> optional, T other)
 			where T : IComparable<T> {
 			var comparer = Comparer<T>.Default;
-			return !optional.Exists ? -1 : comparer.Compare(optional.Value, other);
+			return !optional.HasValue ? -1 : comparer.Compare(optional.Value, other);
 		}
 
 		/// <summary>
@@ -90,7 +89,7 @@ namespace OptionalSharp {
 		/// <returns></returns>
 		public static int CompareTo<T>(this Optional<T> optional, Optional<T> other)
 			where T : IComparable<T> {
-			return other.Exists ? optional.CompareTo(other.Value) : !optional.Exists ? 0 : 1;
+			return other.HasValue ? optional.CompareTo(other.Value) : !optional.HasValue ? 0 : 1;
 		}
 
 		/// <summary>
@@ -100,7 +99,14 @@ namespace OptionalSharp {
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
 		public static Optional<T> Flatten<T>(this Optional<T> optional) where T : class {
-			return optional.Exists && optional.Value != null ? optional : Optional.None;
+			return optional.HasValue && optional.Value != null ? optional : Optional.None;
+		}
+
+		public static Type GetInnerType(this IAnyOptional optional) {
+			if (optional == null) throw Errors.ArgumentNull(nameof(optional));
+			var t = optional.GetType();
+			return t.GenericTypeArguments.Length > 0 ? t.GenericTypeArguments[0]
+				: throw new InvalidOperationException("The inner type is unknown.");
 		}
 
 
@@ -111,7 +117,7 @@ namespace OptionalSharp {
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
 		public static Optional<T> Flatten<T>(this Optional<Optional<T>> optional) {
-			return optional.Exists ? optional.Value : Optional.None;
+			return optional.HasValue ? optional.Value : Optional.None;
 		}
 
 		/// <summary>
@@ -131,36 +137,24 @@ namespace OptionalSharp {
 		/// <param name="maybeOptional">The nested optional value.</param>
 		/// <returns></returns>
 		public static Optional<T> Flatten<T>(this Optional<T?> maybeOptional) where T : struct {
-			return !maybeOptional.Exists ? Optional.NoneOf<T>() : maybeOptional.Value.AsOptional();
+			return !maybeOptional.HasValue ? Optional.NoneOf<T>() : maybeOptional.Value.AsOptional();
 		}
 
 		public static IEnumerable<T> Flatten<T>(this Optional<IEnumerable<T>> self) {
-			return self.Exists ? self.Value : new T[0];
+			return self.HasValue ? self.Value : new T[0];
 		}
 
 		public static T ToClass<T>(this Optional<T> self) where T : class {
-			return self.Exists ? self.Value : null;
+			return self.HasValue ? self.Value : null;
 		}
 
 		public static T? ToNullable<T>(this Optional<T> self)
 			where T : struct {
-			return self.Exists ? (T?)null : self.Value;
+			return !self.HasValue ? (T?)null : self.Value;
 		}
 
-		public static List<T> ToList<T>(this Optional<T> self) {
-			return self.Exists ? new List<T> {
-				self.Value
-			} : new List<T>();
-		}
-
-		public static T[] ToArray<T>(this Optional<T> self) {
-			return self.Exists ? new[] {
-				self.Value
-			} : new T[0];
-		}
-		
 		public static IEnumerable<T> ToEnumerable<T>(this Optional<T> self) {
-			return self.Exists ? new[] {self.Value} : new T[0];
+			return self.HasValue ? new[] {self.Value} : new T[0];
 		}
 
 		public static OptionalTaskAwaiter<T> GetAwaiter<T>(this Optional<Task<T>> @this) {
@@ -174,10 +168,10 @@ namespace OptionalSharp {
 				_inner = inner;
 			}
 
-			public bool IsCompleted => !_inner.Exists || _inner.Value.IsCompleted;
+			public bool IsCompleted => !_inner.HasValue || _inner.Value.IsCompleted;
 
 			public Optional<T> GetResult() {
-				return !_inner.Exists ? Optional.None : _inner.Value.GetAwaiter().GetResult().MakeSome();
+				return !_inner.HasValue ? Optional.None : _inner.Value.GetAwaiter().GetResult().AsOptionalSome();
 			}
 
 			public void OnCompleted(Action continuation) {

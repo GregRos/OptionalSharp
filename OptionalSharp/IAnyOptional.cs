@@ -8,7 +8,7 @@ namespace OptionalSharp {
 		/// <summary>
 		/// Indicates whether this instance wraps a value.
 		/// </summary>
-		bool Exists { get; }
+		bool HasValue { get; }
 
 		/// <summary>
 		/// Gets the underlying value, or throws an exception if none exists.

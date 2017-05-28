@@ -4,7 +4,7 @@ namespace OptionalSharp {
 	/// <summary>
 	///     Indicates that an attempt was made to access the Value property of an Optional with no value.
 	/// </summary>
-	public class NoValueException : InvalidOperationException {
+	public class MissingOptionalValueException : InvalidOperationException {
 
 		private static string GetMessage(Type t, string message) {
 			string typeName = t == null ? "an unknown type" : "type " + t.PrettyName();
@@ -16,7 +16,7 @@ namespace OptionalSharp {
 		/// </summary>
 		/// <param name="t"></param>
 		/// <param name="message">An optional extra message.</param>
-		public NoValueException(Type t = null, string message = "")
+		public MissingOptionalValueException(Type t = null, string message = "")
 			: base(GetMessage(t, message)) {
 			
 		}

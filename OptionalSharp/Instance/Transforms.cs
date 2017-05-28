@@ -8,7 +8,8 @@ namespace OptionalSharp {
 		/// <param name="filter">The predicate.</param>
 		/// <returns></returns>
 		public Optional<T> Filter(Func<T, bool> filter) {
-			return !Exists || !filter(Value) ? None : this;
+			if (filter == null) throw Errors.ArgumentNull(nameof(filter));
+			return !HasValue || !filter(Value) ? None : this;
 		}
 
 		/// <summary>
@@ -18,8 +19,9 @@ namespace OptionalSharp {
 		/// <typeparam name="TOut">The type of the output optional value.</typeparam>
 		/// <param name="map">The function to apply, returning an optional value of a potentially different type.</param>
 		/// <returns></returns>
-		public Optional<TOut> Map<TOut>(Func<T, Optional<TOut>> map) {
-			return !Exists ? Optional<TOut>.None : map(Value);
+		public Optional<TOut> MapMaybe<TOut>(Func<T, Optional<TOut>> map) {
+			if (map == null) throw Errors.ArgumentNull(nameof(map));
+			return !HasValue ? Optional<TOut>.None : map(Value);
 		}
 
 		/// <summary>
@@ -30,7 +32,8 @@ namespace OptionalSharp {
 		/// <param name="map">The function to apply.</param>
 		/// <returns></returns>
 		public Optional<TOut> Map<TOut>(Func<T, TOut> map) {
-			return !Exists ? Optional<TOut>.None : Optional.Some(map(this.Value));
+			if (map == null) throw Errors.ArgumentNull(nameof(map));
+			return !HasValue ? Optional<TOut>.None : Optional.Some(map(this.Value));
 		}
 
 		/// <summary>
@@ -39,7 +42,7 @@ namespace OptionalSharp {
 		/// <typeparam name="TOut">The type of the output value.</typeparam>
 		/// <returns></returns>
 		public Optional<TOut> As<TOut>() {
-			return Exists && Value is TOut ? Optional.Some((TOut) (object) Value) : Optional.None;
+			return HasValue && Value is TOut ? Optional.Some((TOut) (object) Value) : Optional.None;
 		}
 
 		/// <summary>
@@ -48,7 +51,7 @@ namespace OptionalSharp {
 		/// <typeparam name="TOut">The type to cast to.</typeparam>
 		/// <exception cref="InvalidCastException">Thrown if the conversion fails.</exception>
 		public Optional<TOut> Cast<TOut>() {
-			return !Exists ? Optional.None : Optional.Some((TOut) (object) Value);
+			return !HasValue ? Optional.None : Optional.Some((TOut) (object) Value);
 		}
 
 		/// <summary>
@@ -56,8 +59,8 @@ namespace OptionalSharp {
 		/// </summary>
 		/// <param name="other">The other optional value instance.</param>
 		/// <returns></returns>
-		public Optional<T> Else(Optional<T> other) {
-			return Exists ? this : other;
+		public Optional<T> OrMaybe(Optional<T> other) {
+			return HasValue ? this : other;
 		}
 
 		/// <summary>
@@ -65,8 +68,8 @@ namespace OptionalSharp {
 		/// </summary>
 		/// <param name="default">The default value, returned if this instance has no value.</param>
 		/// <returns></returns>
-		public T Else(T @default) {
-			return this.Exists ? this.Value : @default;
+		public T Or(T @default) {
+			return this.HasValue ? this.Value : @default;
 		}
 
 	}

@@ -18,10 +18,10 @@ namespace OptionalSharp {
 		}
 
 		/// <summary>
-		///     Converts the <see cref="AnyNoneToken"/> token to a proper optional value of type <typeparamref name="T"/>, indicating a missing value.
+		///     Converts the <see cref="ImplicitNoneValue"/> token to a proper optional value of type <typeparamref name="T"/>, indicating a missing value.
 		/// </summary>
 		/// <param name="none">The none token.</param>
-		public static implicit operator Optional<T>(AnyNoneToken none) {
+		public static implicit operator Optional<T>(ImplicitNoneValue none) {
 			return None;
 		}
 	}

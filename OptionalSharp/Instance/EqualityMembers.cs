@@ -1,27 +1,33 @@
+using System;
+
 namespace OptionalSharp {
 	public partial struct Optional<T> {
 		internal const int NoneHashCode = 0;
 		/// <summary>
-		/// Determines if this optional value is equal to another optional value, where the underlying value type of the second optional value is unknown.
+		/// Determines if this instance is equal to another Optional, where the inner type of the other Optional is not known.
 		/// </summary>
-		/// <param name="other">The other optional value.</param>
+		/// <param name="other">The other Optional.</param>
 		/// <returns></returns>
+		/// <exception cref="ArgumentNullException">Thrown if the argument is null. This method cannot accept a null argument because <c>null</c> is not considered a proper value for an Optional.</exception>
 		public bool Equals(IAnyOptional other) {
+			if (other == null) {
+				throw Errors.ArgumentNull("other");
+			}
 			return (!HasValue && !other.HasValue) || (HasValue && other.HasValue && Equals(Value, other.Value));
 		}
 
 		/// <summary>
-		/// Determines equality between optional values of different types. None values are always equal, and Some values are equal if the underlying values are equal.
+		/// Checks if this instance is equal to some <see cref="Optional{T2}"/>, with a potentially different inner type.
 		/// </summary>
-		/// <typeparam name="T2">The type of the second optional value.</typeparam>
-		/// <param name="other">The other optional value.</param>
+		/// <typeparam name="T2">The inner type of the other Optional.</typeparam>
+		/// <param name="other">The other Optional.</param>
 		/// <returns></returns>
 		public bool Equals<T2>(Optional<T2> other) {
 			return !HasValue ? !other.HasValue : HasValue && other.HasValue && Equals(Value, other.Value);
 		}
 
 		/// <summary>
-		///     Determines equality between the optional value and another object, which may be another optional value or a concrete value.
+		///     Determines equality between this instance and another object, such as another Optional or a concrete value.
 		/// </summary>
 		/// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
 		/// <returns>
@@ -34,14 +40,14 @@ namespace OptionalSharp {
 				case null:
 					goto default;
 				case IAnyOptional opt:
-					return Equals((IAnyOptional) obj);
+					return Equals(opt);
 				default:
 					return HasValue && Equals(Value, obj);
 			}
 		}
 
 		/// <summary>
-		/// Determines if this optional value instance is equal to the specified concrete (non-optional) value.
+		/// Determines if this instance is equal to the given non-optional value.
 		/// </summary>
 		/// <param name="other">The concrete value.</param>
 		/// <returns>
@@ -52,7 +58,7 @@ namespace OptionalSharp {
 		}
 
 		/// <summary>
-		///		Determines whether this optional value instance is equal to the specified optional value instance.
+		///		Determines whether this instance is equal to another <see cref="Optional{T}"/>.
 		/// </summary>
 		/// <param name="other">An object to compare with this object.</param>
 		public bool Equals(Optional<T> other) {
@@ -60,7 +66,7 @@ namespace OptionalSharp {
 		}
 
 		/// <summary>
-		///     Returns a hash code for this optional value instance. If it has an underlying value, the hash code of the underlying value is returned. Otherwise, a hash code of 0 is returned.
+		///     Returns a hash code for this instance.
 		/// </summary>
 		public override int GetHashCode() {
 			return !HasValue ? NoneHashCode : _eq.GetHashCode(Value);

@@ -9,9 +9,9 @@ using System.Reflection;
 namespace OptionalSharp {
 
 	/// <summary>
-	///     Indicates an optional value of type <typeparamref name="T"/>.
+	///    An Optional of inner type <typeparamref name="T"/>. Indicates a potentially missing value of that type.
 	/// </summary>
-	/// <typeparam name="T">The type of value.</typeparam>
+	/// <typeparam name="T">The inner type, or the type of the underlying value.</typeparam>
 	[Serializable]
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public partial struct Optional<T> : IEquatable<T>, IEquatable<Optional<T>>, IAnyOptional, IFormattable {
@@ -23,6 +23,10 @@ namespace OptionalSharp {
 		[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
 		readonly T _value;
 
+		/// <summary>
+		/// Constructs a Some-state Optional, which means it contains an inner value.
+		/// </summary>
+		/// <param name="value">The inner value of the Optional.</param>
 		public Optional(T value) : this() {
 			_value = value;
 			_hasValue = true;
@@ -30,30 +34,43 @@ namespace OptionalSharp {
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		object IAnyOptional.Value => Value;
 
+		public Type GetInnerType() {
+			return typeof(T);
+		}
+
 		/// <summary>
 		///     Returns an instance indicating a missing value.
 		/// </summary>
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		public static Optional<T> None => new Optional<T>();
 
+		/// <summary>
+		/// Returns an informational string describing the object with more detail than <see cref="ToString"/>.
+		/// </summary>
+		/// <returns></returns>
+		public string ToDebugString() {
+			if (HasValue) return $"Some({Value})";
+			return $"None";
+		}
+
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		string DebuggerDisplay {
 			get {
-				if (HasValue) return $"Some({Value})";
-				return $"None";
+				return ToDebugString();
 			}
 		}
 
 		/// <summary>
-		/// Returns true if this optional value is Some.
+		/// Returns true if this Optional is in its Some state, i.e. if it has an inner value.
 		/// </summary>
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		public bool HasValue => _hasValue;
 
 		/// <summary>
-		///		Returns the underlying value, or throws an exception if none exists.
+		///		Returns the inner value, or throws an exception if none exists.
 		/// </summary>
+		/// <exception cref="MissingOptionalValueException">Thrown if no inner value exists, i.e. this Optional is in its None state.</exception>
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		public T Value {
 			get {
@@ -63,7 +80,7 @@ namespace OptionalSharp {
 		}
 
 		/// <summary>
-		///     Returns a string representation of this optional value. 
+		///     Returns a string representation of this Optional, usually that of its inner value.
 		/// </summary>
 		/// <returns>
 		///     A string that represents this optional value.
@@ -83,21 +100,21 @@ namespace OptionalSharp {
 	/// </summary>
 	public static class Optional {
 
-		
+
 		/// <summary>
-		///     Returns a special token that can be implicitly converted to a None optional value instance of any type.
+		///     Returns a special Optional token in a None state, without a known inner type. This token can be implicitly converted to any <see cref="Optional{T}"/>.
 		/// </summary>
 		public static ImplicitNoneValue None => ImplicitNoneValue.Instance;
 
 		/// <summary>
-		///     Returns an optional value instance indicating a missing value of type <typeparamref name="T"/>
+		///     Returns an <see cref="Optional{T}"/> in its None state, i.e. without an inner value.
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
 		public static Optional<T> NoneOf<T>() => None;
 
 		/// <summary>
-		///     Returns an optional value instance wrapping the specified value.
+		///     Returns an <see cref="Optional{T}"/> in its Some state, i.e. with an inner value.
 		/// </summary>
 		/// <typeparam name="T">The type of the value.</typeparam>
 		/// <param name="value">The value to wrap.</param>
@@ -105,15 +122,14 @@ namespace OptionalSharp {
 		public static Optional<T> Some<T>(T value) => new Optional<T>(value);
 
 		/// <summary>
-		/// Wraps a value as a strongly-typed Optional at runtime, when no static type of the value is known.
+		/// Creates a new <see cref="Optional{T}"/> at runtime, with its inner type being the runtime type of the passed value.
 		/// </summary>
-		/// <param name="any">The inner value.</param>
-		/// <param name="typeOverride">Optionally, the value type parameter of the resulting Optional, used instead of the value's runtime type.</param>
+		/// <param name="any">The inner value. If <c>null</c>, its inner type will be considered <see cref="object"/>.</param>
+		/// <param name="typeOverride">Optionally, the explicit inner type of the resulting <see cref="Optional{T}"/>. Must be compatible with the value.</param>
 		/// <returns></returns>
-		public static IAnyOptional CreateRuntimeOptional(object any, Optional<Type> typeOverride = default(Optional<Type>))
+		public static IAnyOptional RuntimeCreateOptional(object any, Optional<Type> typeOverride = default(Optional<Type>))
 		{
-			if (any == null) throw Errors.ArgumentNull(nameof(any));
-			var innerType = any.GetType();
+			var innerType = any?.GetType() ?? typeof(object);
 			if (typeOverride.HasValue)
 			{
 				if (!typeOverride.Value.IsAssignableFrom(innerType)) throw Errors.InvalidType(nameof(typeOverride));

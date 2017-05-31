@@ -2,7 +2,7 @@ using System;
 
 namespace OptionalSharp {
 	/// <summary>
-	///     Indicates that an attempt was made to access the Value property of an Optional with no value.
+	///     Indicates that an attempt was made to access the Value property of an Optional with no inner value.
 	/// </summary>
 	public class MissingOptionalValueException : InvalidOperationException {
 

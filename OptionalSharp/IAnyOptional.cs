@@ -14,5 +14,11 @@ namespace OptionalSharp {
 		/// Gets the underlying value, or throws an exception if none exists.
 		/// </summary>
 		object Value { get; }
+
+		/// <summary>
+		/// Returns the declared inner type of the Optional.
+		/// </summary>
+		/// <returns></returns>
+		Type GetInnerType();
 	}
 }

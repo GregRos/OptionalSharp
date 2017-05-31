@@ -54,6 +54,9 @@ namespace OptionalSharp {
 			return "";
 		}
 
+		public Type GetInnerType() {
+			return typeof(object);
+		}
 
 	}
 }

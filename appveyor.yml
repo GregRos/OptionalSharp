@@ -1,0 +1,10 @@
+before_build:
+ - nuget restore
+build_script:
+ - msbuild /verbosity:quiet "OptionalSharp"
+test_script:
+ - cover.cmd
+after_test:
+ - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+ - pip install codecov
+ - codecov -f "Coverage\Raw\coverage.xml" -t 23042110-f214-408a-a315-a430cb22c2ad

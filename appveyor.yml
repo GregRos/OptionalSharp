@@ -1,7 +1,7 @@
 before_build:
  - nuget restore
 build_script:
- - msbuild /verbosity:quiet "OptionalSharp"
+ - msbuild /verbosity:quiet "OptionalSharp.Tests\OptionalSharp.Tests.csproj"
 test_script:
  - cover.cmd
 after_test:

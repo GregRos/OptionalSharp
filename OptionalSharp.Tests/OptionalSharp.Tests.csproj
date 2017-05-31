@@ -60,6 +60,8 @@
     <Compile Include="Tests\Conversions.cs" />
     <Compile Include="Tests\Creation.cs" />
     <Compile Include="Tests\Equality.cs" />
+    <Compile Include="Tests\Runtime.cs" />
+    <Compile Include="Tests\Stringify.cs" />
     <Compile Include="Tests\Transforms.cs" />
   </ItemGroup>
   <ItemGroup>

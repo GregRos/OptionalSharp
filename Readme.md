@@ -1,6 +1,6 @@
 # OptionalSharp
 [![Build status](https://ci.appveyor.com/api/projects/status/u95y7i721ngdo35b?svg=true)](https://ci.appveyor.com/project/GregRos/optionalsharp)
-[![Code Coverage](https://codecov.io/gh/GregRos/OptionalSharp/branch/master/graph/badge.svg)]
+[![Code Coverage](https://codecov.io/gh/GregRos/OptionalSharp/branch/master/graph/badge.svg)](https://codecov.io/gh/GregRos/OptionalSharp)
 
 This library introduces a powerful, yet simple optional type to C# that can be consumed from other languages too.
 

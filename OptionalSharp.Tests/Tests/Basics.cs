@@ -13,18 +13,18 @@ namespace OptionalSharp.Tests
 				Assert.False(token.HasValue);
 				Assert.Throws<MissingOptionalValueException>(() => token.Value);
 				Assert.Equal(token.ToString(), "");
-
 			}
 		}
 
 		public static class ConvertsToIAnyOptional {
+			[Fact]
 			static void None_IsNone() {
 				var opt = new Optional<int>();
 				IAnyOptional opt2 = opt;
 				Assert.False(opt2.HasValue);
 				Assert.Throws<MissingOptionalValueException>(() => opt2.Value);
 			}
-
+			[Fact]
 			static void Some_IsSome() {
 				var opt = new Optional<int>(5);
 				IAnyOptional opt2 = opt;

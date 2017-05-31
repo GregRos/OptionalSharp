@@ -2,18 +2,19 @@
 
 namespace OptionalSharp.Tests {
 	public static partial class Tests {
-		public static class Creation {
-			static void IsValidSome<T>(Optional<T> some, T value)
-			{
-				Assert.True(some.HasValue);
-				Assert.Equal(some.Value, value);
-			}
+		static void IsValidSome<T>(Optional<T> some, T value)
+		{
+			Assert.True(some.HasValue);
+			Assert.Equal(some.Value, value);
+		}
 
-			static void IsValidNone<T>(Optional<T> none)
-			{
-				Assert.False(none.HasValue);
-				Assert.Throws<MissingOptionalValueException>(() => none.Value);
-			}
+		static void IsValidNone<T>(Optional<T> none)
+		{
+			Assert.False(none.HasValue);
+			Assert.Throws<MissingOptionalValueException>(() => none.Value);
+		}
+		public static class Creation {
+
 			[Fact]
 			static void Ctor_Some() {
 				var some = new Optional<int>(5);

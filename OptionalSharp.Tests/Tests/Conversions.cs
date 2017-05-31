@@ -20,6 +20,11 @@ namespace OptionalSharp.Tests {
 				Assert.Equal(Some(5).ToEnumerable(), new[] {5});
 				Assert.Equal(NoneOf<int>().ToEnumerable(), new int[] {});
 			}
+			[Fact]
+			static void ExplicitConversionToValue() {
+				Assert.Equal((int)Some(5), 5);
+			}
+
 
 			
 		}

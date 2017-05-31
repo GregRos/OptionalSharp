@@ -132,9 +132,9 @@ namespace OptionalSharp.Tests {
 				static void FlattenNested() {
 					var x = Optional.Some(Optional.Some(5));
 					Assert.Equal(x, Optional.Some(5));
-					Assert.Equal(x, (object)5);
+					Assert.Equal(x.Value.Value, (object)5);
 					Optional<int> flat = x.Flatten();
-					Assert.Equal(flat, 5);
+					Assert.Equal(flat.Value, 5);
 				}
 				[Fact]
 				static void FlattenOptionalOfNullable() {

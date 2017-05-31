@@ -4,7 +4,7 @@ namespace OptionalSharp {
 	/// <summary>
 	/// Represents an optional value, where the underlying value type is unknown. Used for abstracting over all optional types.
 	/// </summary>
-	public interface IAnyOptional {
+	public interface IAnyOptional : IEquatable<IAnyOptional> {
 		/// <summary>
 		/// Indicates whether this instance wraps a value.
 		/// </summary>

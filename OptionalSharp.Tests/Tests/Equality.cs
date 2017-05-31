@@ -41,11 +41,7 @@ namespace OptionalSharp.Tests {
 			static void OptionalsEqual<T1>(Optional<T1> a, object b) {
 				Assert.True(a.Equals((object) b));
 
-				if (b is IAnyOptional i) {
-					Assert.True(a.Equals(i));
-					Assert.True(a == i);
-					Assert.True(!(a != i));
-				}
+
 				if (b != null) {
 					Assert.Equal(a.GetHashCode(), b.GetHashCode());
 				}
@@ -54,6 +50,15 @@ namespace OptionalSharp.Tests {
 					Assert.True(a.Equals(o));
 					Assert.True(a == o);
 					Assert.True(!(a != o));
+				}
+				if (b is IAnyOptional i) {
+					Assert.True(a.Equals(i));
+					Assert.True(a == i);
+					Assert.True(!(a != i));
+					Assert.True(i.Equals(a));
+				}
+				else if (b is T1 v) {
+					Assert.True(a.ValueEquals(v));
 				}
 			}
 
@@ -131,24 +136,6 @@ namespace OptionalSharp.Tests {
 					var some1 = Optional.Some(new CustomType(5));
 					var some2 = Optional.Some(new CustomType(5));
 					OptionalsEqual(some1, some2);
-				}
-			}
-
-			public static class SomeAndValueAreEqual {
-				[Fact]
-				static void SameValue() {
-					var some1 = Optional.Some(5);
-					var value = 5;
-					OptionalsEqual(some1, value);
-					var some2 = Optional.Some<object>(null);
-					OptionalsEqual(some2, null);
-				}
-
-				[Fact]
-				static void CustomType() {
-					var some1 = new CustomType(5).AsOptionalSome();
-					var value = new CustomType(5);
-					OptionalsEqual(some1, value);
 				}
 			}
 

@@ -39,44 +39,5 @@ namespace OptionalSharp {
 			return !(a == b);
 		}
 
-		/// <summary>
-		///     Determines equality between an Optional and a value of the inner type of the Optional.
-		/// </summary>
-		/// <param name="optional">The Optional.</param>
-		/// <param name="concrete">The non-Optional value.</param>
-		/// <returns></returns>
-		public static bool operator ==(T concrete, Optional<T> optional) {
-			return optional.Equals(concrete);
-		}
-
-		/// <summary>
-		///     Determines inequality between an Optional and a concrete value. The inverse of the == operator.
-		/// </summary>
-		/// <param name="optional">The Optional.</param>
-		/// <param name="concrete">The non-Optional.</param>
-		/// <returns></returns>
-		public static bool operator !=(Optional<T> optional, T concrete) {
-			return !(optional == concrete);
-		}
-
-		/// <summary>
-		///     Determines equality between an Optional and a concrete value.
-		/// </summary>
-		/// <param name="optional">The Optional.</param>
-		/// <param name="concrete">The concrete value.</param>
-		/// <returns></returns>
-		public static bool operator ==(Optional<T> optional, T concrete) {
-			return optional.Equals(concrete);
-		}
-
-		/// <summary>
-		///     Determines inequality between an Optional and a concrete value. The inverse of the == operator.
-		/// </summary>
-		/// <param name="concrete">The concrete value.</param>
-		/// <param name="optional">The optional.</param>
-		/// <returns></returns>
-		public static bool operator !=(T concrete, Optional<T> optional) {
-			return !(concrete == optional);
-		}
 	}
 }

@@ -1,8 +1,13 @@
 using System;
 
 namespace OptionalSharp {
+	internal static class OptionalHashCodes {
+		public const int NoneHashCode = -1213734;
+
+		public const int SomeHashCodeXor = 123123123;
+	}
+
 	public partial struct Optional<T> {
-		internal const int NoneHashCode = 0;
 		/// <summary>
 		/// Determines if this instance is equal to another Optional, where the inner type of the other Optional is not known.
 		/// </summary>
@@ -37,12 +42,10 @@ namespace OptionalSharp {
 			switch (obj) {
 				case Optional<T> opt:
 					return Equals(opt);
-				case null:
-					goto default;
 				case IAnyOptional opt:
 					return Equals(opt);
 				default:
-					return HasValue && Equals(Value, obj);
+					return false;
 			}
 		}
 
@@ -53,7 +56,7 @@ namespace OptionalSharp {
 		/// <returns>
 		/// true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
 		/// </returns>
-		public bool Equals(T other) {
+		public bool ValueEquals(T other) {
 			return HasValue && _eq.Equals(Value, other);
 		}
 
@@ -62,14 +65,14 @@ namespace OptionalSharp {
 		/// </summary>
 		/// <param name="other">An object to compare with this object.</param>
 		public bool Equals(Optional<T> other) {
-			return !other.HasValue ? !HasValue : Equals(other.Value);
+			return !other.HasValue ? !HasValue : ValueEquals(other.Value);
 		}
 
 		/// <summary>
 		///     Returns a hash code for this instance.
 		/// </summary>
 		public override int GetHashCode() {
-			return !HasValue ? NoneHashCode : _eq.GetHashCode(Value);
+			return !HasValue ? OptionalHashCodes.NoneHashCode : OptionalHashCodes.SomeHashCodeXor ^ _eq.GetHashCode(Value);
 		}
 	}
 }

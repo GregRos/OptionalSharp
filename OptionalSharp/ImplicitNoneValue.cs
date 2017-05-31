@@ -32,7 +32,7 @@ namespace OptionalSharp {
 		}
 
 		public override int GetHashCode() {
-			return Optional<int>.NoneHashCode;
+			return OptionalHashCodes.NoneHashCode;
 		}
 
 		string IFormattable.ToString(string format, IFormatProvider formatProvider) {

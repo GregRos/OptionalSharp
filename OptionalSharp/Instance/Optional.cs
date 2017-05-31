@@ -14,7 +14,7 @@ namespace OptionalSharp {
 	/// <typeparam name="T">The inner type, or the type of the underlying value.</typeparam>
 	[Serializable]
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
-	public partial struct Optional<T> : IEquatable<T>, IEquatable<Optional<T>>, IAnyOptional, IFormattable {
+	public partial struct Optional<T> : IEquatable<Optional<T>>, IAnyOptional, IFormattable {
 		private static readonly IEqualityComparer<T> _eq = EqualityComparer<T>.Default;
 		
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]

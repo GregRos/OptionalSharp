@@ -34,6 +34,10 @@ namespace OptionalSharp {
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		object IAnyOptional.Value => Value;
 
+		/// <summary>
+		/// Gets the inner type of this Optional.
+		/// </summary>
+		/// <returns></returns>
 		public Type GetInnerType() {
 			return typeof(T);
 		}
@@ -143,6 +147,11 @@ namespace OptionalSharp {
 			return (IAnyOptional)result;
 		}
 
+		/// <summary>
+		/// Creates a new <see cref="Optional{T}"/> at runtime, in its None state, with the appropriate inner type.
+		/// </summary>
+		/// <param name="type">The inner type of the Optional.</param>
+		/// <returns></returns>
 		public static IAnyOptional RuntimeCreateNone(Type type) {
 			if (type == null) throw Errors.ArgumentNull("type");
 			var optional = typeof(Optional<>).MakeGenericType(type);

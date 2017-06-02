@@ -50,7 +50,7 @@ namespace OptionalSharp {
 		/// <exception cref="InvalidCastException">Thrown if the conversion fails.</exception>
 		public Optional<TOut> Cast<TOut>() {
 			return !HasValue ? Optional.None : Optional.Some((TOut) (object) Value);
-		}
+		} 
 
 		/// <summary>
 		///		Similar to <c>??</c>. Returns the other Optional if this Optional is a None.

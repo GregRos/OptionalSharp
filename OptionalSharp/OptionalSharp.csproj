@@ -34,6 +34,16 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Publish|AnyCPU'">
+    <OutputPath>bin\Publish\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Publish\OptionalSharp.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,15 +54,23 @@
     <Compile Include="Errors\Errors.cs" />
     <Compile Include="IAnyOptional.cs" />
     <Compile Include="Errors\MissingOptionalValueException.cs" />
-    <Compile Include="Instance\Optional.cs" />
+    <Compile Include="Optional\Optional.cs" />
     <Compile Include="Extensions\OptionalExtensions.cs" />
-    <Compile Include="Instance\Conversions.cs" />
-    <Compile Include="Instance\EqualityMembers.cs" />
-    <Compile Include="Instance\EqualityOperators.cs" />
-    <Compile Include="Instance\Transforms.cs" />
+    <Compile Include="Optional\Conversions.cs" />
+    <Compile Include="Optional\EqualityMembers.cs" />
+    <Compile Include="Optional\EqualityOperators.cs" />
+    <Compile Include="Optional\Transforms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\ReflectExt.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="OptionalSharp.nuspec" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>IF $(ConfigurationName) == Publish (
+   "$(SolutionDir)nuget\nuget.exe" pack "$(ProjectPath)" -OutputDirectory "$(SolutionDir)nupkgs" -Prop Configuration=$(ConfigurationName)
+)
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>

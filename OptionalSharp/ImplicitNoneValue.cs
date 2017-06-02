@@ -26,11 +26,19 @@ namespace OptionalSharp {
 		/// Throws a <see cref="MissingOptionalValueException"/>.
 		/// </summary>
 		public object Value => throw Errors.NoValue();
-
+		
+		/// <summary>
+		/// Checks if this object is equal to another object.
+		/// </summary>
+		/// <param name="obj">The second object.</param>
+		/// <returns></returns>
 		public override bool Equals(object obj) {
 			return obj is IAnyOptional i && !i.HasValue;
 		}
-
+		/// <summary>
+		/// Gets the hash code of the object.
+		/// </summary>
+		/// <returns></returns>
 		public override int GetHashCode() {
 			return OptionalHashCodes.NoneHashCode;
 		}
@@ -54,6 +62,10 @@ namespace OptionalSharp {
 			return "";
 		}
 
+		/// <summary>
+		/// Gets the inner type of this Optional
+		/// </summary>
+		/// <returns></returns>
 		public Type GetInnerType() {
 			return typeof(object);
 		}

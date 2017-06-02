@@ -56,6 +56,7 @@ namespace OptionalSharp.Tests {
 					Assert.True(a == i);
 					Assert.True(!(a != i));
 					Assert.True(i.Equals(a));
+					Assert.True(a.Equals((object)a));
 				}
 				else if (b is T1 v) {
 					Assert.True(a.ValueEquals(v));

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<!-- Required elements-->
+		<id>$id$</id>
+		<version>$version$</version>
+		<title>
+			Optional#
+		</title>
+		<description>
+			Optional# Implements an optional type for .NET. 
+			
+			An Optional type represents the type of a value that may or may not exist. You can implement this with nulls too, but doing so has many issues. 
+		</description>
+		<authors>$author$</authors>
+		<copyright>$copyright$</copyright>
+		<projectUrl>https://github.com/GregRos/OptionalSharp</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		
+		<summary>$description$</summary>
+		<releaseNotes>No notes.</releaseNotes>
+		<licenseUrl>https://github.com/GregRos/OptionalSharp/blob/master/LICENSE</licenseUrl>
+		<tags>functional optional optional# optionalsharp option immutable null maybe</tags>
+		<iconUrl>https://raw.githubusercontent.com/GregRos/OptionalSharp/master/Images/OptionalSharp-Icon.png</iconUrl>
+		<packageTypes>
+			<packageType name="Dependency" />
+		</packageTypes>
+	</metadata>
+	<!-- Optional 'files' node -->
+</package>

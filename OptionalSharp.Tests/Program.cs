@@ -9,6 +9,8 @@ namespace OptionalSharp.Tests
 	class Program
 	{
 		static void Main(string[] args) {
+			var x = Optional.None("Test").Cast<int>();
+			var v = Optional.Some(5);
 		}
 	}
 }

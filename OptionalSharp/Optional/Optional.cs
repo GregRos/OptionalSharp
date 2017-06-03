@@ -20,17 +20,26 @@ namespace OptionalSharp {
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		readonly bool _hasValue;
 
-		[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		readonly T _value;
+
+		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+		readonly object _reason;
 
 		/// <summary>
 		/// Constructs a Some-state Optional, which means it contains an inner value.
 		/// </summary>
 		/// <param name="value">The inner value of the Optional.</param>
-		public Optional(T value) : this() {
-			_value = value;
-			_hasValue = true;
+		internal Optional(T value) : this(value, true, null) {
+
 		}
+
+		internal Optional(T value, bool hasValue, object reason) {
+			_value = value;
+			_hasValue = hasValue;
+			_reason = reason;
+		} 
+
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		object IAnyOptional.Value => Value;
 
@@ -42,11 +51,6 @@ namespace OptionalSharp {
 			return typeof(T);
 		}
 
-		/// <summary>
-		///     Returns an instance indicating a missing value.
-		/// </summary>
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-		public static Optional<T> None => new Optional<T>();
 
 		/// <summary>
 		/// Returns an informational string describing the object with more detail than <see cref="ToString"/>.
@@ -68,20 +72,24 @@ namespace OptionalSharp {
 		/// <summary>
 		/// Returns true if this Optional is in its Some state, i.e. if it has an inner value.
 		/// </summary>
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		public bool HasValue => _hasValue;
 
 		/// <summary>
 		///		Returns the inner value, or throws an exception if none exists.
 		/// </summary>
 		/// <exception cref="MissingOptionalValueException">Thrown if no inner value exists, i.e. this Optional is in its None state.</exception>
-		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		public T Value {
 			get {
-				if (!HasValue) throw Errors.NoValue<T>();
+				if (!HasValue) throw Errors.NoValue(typeof(T), Reason);
 				return _value;
 			}
 		}
+
+		/// <summary>
+		/// A Reason object that describes why this Optional might be None.
+		/// This is a nullable property. 
+		/// </summary>
+		public object Reason => HasValue ? null : _reason ?? MissingValueReason.NoReasonSpecified;
 
 		/// <summary>
 		///     Returns a string representation of this Optional, usually that of its inner value.
@@ -103,19 +111,17 @@ namespace OptionalSharp {
 	/// Contains extension and utility methods for dealing with Optional values.
 	/// </summary>
 	public static class Optional {
-
-
 		/// <summary>
 		///     Returns a special Optional token in a None state, without a known inner type. This token can be implicitly converted to any <see cref="Optional{T}"/>.
 		/// </summary>
-		public static ImplicitNoneValue None => ImplicitNoneValue.Instance;
+		public static ImplicitNoneValue None(Optional<object> reason = default(Optional<object>)) => new ImplicitNoneValue(reason.HasValue ? reason.Value : null);
 
 		/// <summary>
 		///     Returns an <see cref="Optional{T}"/> in its None state, i.e. without an inner value.
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public static Optional<T> NoneOf<T>() => None;
+		public static Optional<T> NoneOf<T>(Optional<object> reason = default(Optional<object>)) => new Optional<T>(default(T), false, reason.HasValue ? reason.Value : null);
 
 		/// <summary>
 		///     Returns an <see cref="Optional{T}"/> in its Some state, i.e. with an inner value.
@@ -139,11 +145,8 @@ namespace OptionalSharp {
 				if (!typeOverride.Value.IsAssignableFrom(innerType)) throw Errors.InvalidType(nameof(typeOverride));
 				innerType = typeOverride.Value;
 			}
-			var optional = typeof(Optional<>).MakeGenericType(innerType);
-			var ctor = optional.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly, null, new[] {
-				innerType
-			}, null);
-			var result = ctor.Invoke(new[] { any });
+			var method = typeof(Optional).GetMethod(nameof(Some)).MakeGenericMethod(innerType);
+			var result = method.Invoke(null, new[] {any});
 			return (IAnyOptional)result;
 		}
 
@@ -151,12 +154,12 @@ namespace OptionalSharp {
 		/// Creates a new <see cref="Optional{T}"/> at runtime, in its None state, with the appropriate inner type.
 		/// </summary>
 		/// <param name="type">The inner type of the Optional.</param>
+		/// <param name="reason">Optionally, a reason for the lack of a value.</param>
 		/// <returns></returns>
-		public static IAnyOptional RuntimeCreateNone(Type type) {
+		public static IAnyOptional RuntimeCreateNone(Type type, Optional<object> reason = default(Optional<object>)) {
 			if (type == null) throw Errors.ArgumentNull("type");
-			var optional = typeof(Optional<>).MakeGenericType(type);
-
-			var result = Activator.CreateInstance(optional);
+			var method = typeof(Optional).GetMethod(nameof(NoneOf)).MakeGenericMethod(type);
+			var result = method.Invoke(null, new object[] { reason });
 			return (IAnyOptional) result;
 		}
 	}

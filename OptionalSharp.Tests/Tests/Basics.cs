@@ -9,7 +9,7 @@ namespace OptionalSharp.Tests
 		public static class AnyNoneToken {
 			[Fact]
 			static void IsValidNone() {
-				var token = Optional.None;
+				var token = Optional.None();
 				Assert.False(token.HasValue);
 				Assert.Throws<MissingOptionalValueException>(() => token.Value);
 				Assert.Equal(token.ToString(), "");
@@ -26,7 +26,7 @@ namespace OptionalSharp.Tests
 			}
 			[Fact]
 			static void Some_IsSome() {
-				var opt = new Optional<int>(5);
+				var opt = Optional.Some(5);
 				IAnyOptional opt2 = opt;
 				Assert.True(opt2.HasValue);
 				Assert.Equal(opt2.Value, 5);

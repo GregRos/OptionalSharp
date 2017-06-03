@@ -25,10 +25,11 @@ namespace OptionalSharp {
 		/// </summary>
 		/// <typeparam name="T">The type of the value.</typeparam>
 		/// <param name="x">The value.</param>
+		/// <param name="whyNull">A reason for why the original value might be null.</param>
 		/// <returns></returns>
-		public static Optional<T> AsOptional<T>(this T? x)
+		public static Optional<T> AsOptional<T>(this T? x, Optional<object> whyNull = default(Optional<object>))
 			where T : struct {
-			return x.HasValue ? Optional.Some(x.Value) : Optional.None;
+			return x.HasValue ? Optional.Some(x.Value) : Optional.NoneOf<T>(whyNull.Or(MissingValueReason.ConvertedFromNull));
 		}
 
 		/// <summary>
@@ -36,8 +37,11 @@ namespace OptionalSharp {
 		/// </summary>
 		/// <typeparam name="T">The type of the value.</typeparam>
 		/// <param name="x">The value.</param>
+		/// <param name="whyNull"></param>
 		/// <returns></returns>
-		public static Optional<T> AsOptional<T>(this T x) => x != null ? x.AsOptionalSome() : Optional.None;
+		public static Optional<T> AsOptional<T>(this T x, Optional<object> whyNull = default(Optional<object>)) => 
+			x != null ? x.AsOptionalSome() : Optional.NoneOf<T>(whyNull.Or(MissingValueReason.ConvertedFromNull));
+
 
 		/// <summary>
 		///     Returns the underlying value of the Optional, or throws an exception if none exists.
@@ -56,10 +60,11 @@ namespace OptionalSharp {
 		/// Flattens an <see cref="Optional{T}"/> by converting a Some(null) into a None.
 		/// </summary>
 		/// <param name="optional">The Optional.</param>
+		/// <param name="whyNull">A reason for why the internal object might be null.</param>
 		/// <typeparam name="T">The inner type.</typeparam>
 		/// <returns></returns>
-		public static Optional<T> Flatten<T>(this Optional<T> optional) where T : class {
-			return optional.HasValue && optional.Value != null ? optional : Optional.None;
+		public static Optional<T> Flatten<T>(this Optional<T> optional, Optional<object> whyNull = default(Optional<object>)) where T : class {
+			return optional.HasValue && optional.Value != null ? optional : Optional.NoneOf<T>(whyNull.Or(MissingValueReason.ConvertedFromNull));
 		}
 
 		/// <summary>
@@ -69,7 +74,7 @@ namespace OptionalSharp {
 		/// <typeparam name="T">The innermost type.</typeparam>
 		/// <returns></returns>
 		public static Optional<T> Flatten<T>(this Optional<Optional<T>> optional) {
-			return optional.HasValue ? optional.Value : Optional.None;
+			return optional.HasValue ? optional.Value : Optional.NoneOf<T>(optional.Reason);
 		}
 
 		/// <summary>
@@ -77,9 +82,10 @@ namespace OptionalSharp {
 		/// </summary>
 		/// <typeparam name="T">The inner type.</typeparam>
 		/// <param name="maybeOptional">The nested Optional.</param>
+		/// <param name="whyNull">Reason for why the original value might be null.</param>
 		/// <returns></returns>
-		public static Optional<T> Flatten<T>(this Optional<T>? maybeOptional) {
-			return maybeOptional ?? Optional<T>.None;
+		public static Optional<T> Flatten<T>(this Optional<T>? maybeOptional, Optional<object> whyNull = default(Optional<object>)) {
+			return maybeOptional ?? Optional.NoneOf<T>(whyNull.Or(MissingValueReason.ConvertedFromNull));
 		}
 
 		/// <summary>
@@ -87,9 +93,10 @@ namespace OptionalSharp {
 		/// </summary>
 		/// <typeparam name="T">The optional value type.</typeparam>
 		/// <param name="maybeOptional">The nested optional value.</param>
+		/// <param name="whyNull">Optionally, why the inner value is null.</param>
 		/// <returns></returns>
-		public static Optional<T> Flatten<T>(this Optional<T?> maybeOptional) where T : struct {
-			return !maybeOptional.HasValue ? Optional.NoneOf<T>() : maybeOptional.Value.AsOptional();
+		public static Optional<T> Flatten<T>(this Optional<T?> maybeOptional, Optional<object> whyNull = default(Optional<object>)) where T : struct {
+			return !maybeOptional.HasValue ? Optional.NoneOf<T>(maybeOptional.Reason) : maybeOptional.Value.AsOptional(whyNull.Or(MissingValueReason.ConvertedFromNull));
 		}
 
 		/// <summary>

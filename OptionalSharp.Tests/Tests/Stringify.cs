@@ -27,7 +27,7 @@ namespace OptionalSharp.Tests {
 			}
 			[Fact]
 			static void NoneToken_ToString() {
-				var none = Optional.None;
+				var none = Optional.None();
 				Assert.Equal(none.ToString(), "");
 			}
 

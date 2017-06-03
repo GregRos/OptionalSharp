@@ -6,10 +6,11 @@ namespace OptionalSharp {
 		/// If this is Some, returns Some only if the inner value fulfills the predicate. Otherwise, returns None.
 		/// </summary>
 		/// <param name="predicate">The predicate.</param>
+		/// <param name="reason">Optionally, an object that describes the filter so that if it fails, the reason is recorded.</param>
 		/// <returns></returns>
-		public Optional<T> Filter(Func<T, bool> predicate) {
+		public Optional<T> Filter(Func<T, bool> predicate, Optional<object> reason = default(Optional<object>)) {
 			if (predicate == null) throw Errors.ArgumentNull(nameof(predicate));
-			return !HasValue || !predicate(Value) ? None : this;
+			return !HasValue || !predicate(Value) ? new Optional<T>(default(T), false, reason.Or(MissingValueReason.FailedFilter)) : this;
 		}
 
 		/// <summary>
@@ -20,7 +21,7 @@ namespace OptionalSharp {
 		/// <returns></returns>
 		public Optional<TOut> MapMaybe<TOut>(Func<T, Optional<TOut>> map) {
 			if (map == null) throw Errors.ArgumentNull(nameof(map));
-			return !HasValue ? Optional<TOut>.None : map(Value);
+			return !HasValue ? Optional.NoneOf<TOut>(Reason) : map(Value);
 		}
 
 		/// <summary>
@@ -31,7 +32,7 @@ namespace OptionalSharp {
 		/// <returns></returns>
 		public Optional<TOut> Map<TOut>(Func<T, TOut> map) {
 			if (map == null) throw Errors.ArgumentNull(nameof(map));
-			return !HasValue ? Optional<TOut>.None : Optional.Some(map(this.Value));
+			return !HasValue ? Optional.NoneOf<TOut>(Reason) : Optional.Some(map(this.Value));
 		}
 
 		/// <summary>
@@ -40,7 +41,11 @@ namespace OptionalSharp {
 		/// <typeparam name="TOut">The type to convert to.</typeparam>
 		/// <returns></returns>
 		public Optional<TOut> As<TOut>() {
-			return HasValue && Value is TOut ? Optional.Some((TOut) (object) Value) : Optional.None;
+			if (!HasValue) return Optional.NoneOf<TOut>(Reason);
+			if (Value is TOut) {
+				return Optional.Some((TOut) (object) Value);
+			}
+			return Optional.NoneOf<TOut>(MissingValueReason.FailedCast<T, TOut>.Reason);
 		}
 
 		/// <summary>
@@ -49,7 +54,7 @@ namespace OptionalSharp {
 		/// <typeparam name="TOut">The type to cast to.</typeparam>
 		/// <exception cref="InvalidCastException">Thrown if the conversion fails.</exception>
 		public Optional<TOut> Cast<TOut>() {
-			return !HasValue ? Optional.None : Optional.Some((TOut) (object) Value);
+			return !HasValue ? Optional.None() : Optional.Some((TOut) (object) Value);
 		} 
 
 		/// <summary>
@@ -68,6 +73,16 @@ namespace OptionalSharp {
 		/// <returns></returns>
 		public T Or(T @default) {
 			return this.HasValue ? this.Value : @default;
+		}
+
+		/// <summary>
+		/// Returns an Optional with its Reason property set to the given value, describing why no value is available.
+		/// </summary>
+		/// <typeparam name="T">The inner type.</typeparam>
+		/// <param name="reason">A reason object describing why no value is available.</param>
+		/// <returns></returns>
+		public Optional<T> WithReason(object reason) {
+			return HasValue ? this : new Optional<T>(_value, false, reason);
 		}
 
 	}

@@ -10,7 +10,7 @@ namespace OptionalSharp.Tests {
 			}
 			[Fact]
 			static void NoneToken_GetInnerType() {
-				var none = Optional.None;
+				var none = Optional.None();
 				Assert.Equal(none.GetInnerType(), typeof(object));
 			}
 

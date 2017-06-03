@@ -1,11 +1,6 @@
 using System;
 
 namespace OptionalSharp {
-	internal static class OptionalHashCodes {
-		public const int NoneHashCode = -1213734;
-
-		public const int SomeHashCodeXor = 123123123;
-	}
 
 	public partial struct Optional<T> {
 		/// <summary>
@@ -72,7 +67,7 @@ namespace OptionalSharp {
 		///     Returns a hash code for this instance.
 		/// </summary>
 		public override int GetHashCode() {
-			return !HasValue ? OptionalHashCodes.NoneHashCode : OptionalHashCodes.SomeHashCodeXor ^ _eq.GetHashCode(Value);
+			return !HasValue ? OptionalShared.NoneHashCode : OptionalShared.SomeHashCodeXor ^ _eq.GetHashCode(Value);
 		}
 	}
 }

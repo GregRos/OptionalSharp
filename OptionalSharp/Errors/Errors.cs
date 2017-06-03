@@ -3,12 +3,9 @@ using System;
 namespace OptionalSharp {
 	static class Errors {
 
-		public static MissingOptionalValueException NoValue<T>() {
-			return new MissingOptionalValueException(typeof (T));
-		}
-
-		public static MissingOptionalValueException NoValue() {
-			return new MissingOptionalValueException();
+		
+		public static MissingOptionalValueException NoValue(Type t, object reason) {
+			return new MissingOptionalValueException(t, reason);
 		}
 
 		public static ArgumentNullException ArgumentNull(string argName) {
@@ -19,4 +16,6 @@ namespace OptionalSharp {
 			return new ArgumentException("Invalid type.", argName);
 		}
 	}
+
+
 }

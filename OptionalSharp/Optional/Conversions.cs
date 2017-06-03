@@ -23,7 +23,7 @@ namespace OptionalSharp {
 		/// </summary>
 		/// <param name="none">The none token.</param>
 		public static implicit operator Optional<T>(ImplicitNoneValue none) {
-			return None;
+			return none.Cast<T>();
 		}
 	}
 }

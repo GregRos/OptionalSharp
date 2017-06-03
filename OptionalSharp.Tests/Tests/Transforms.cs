@@ -15,7 +15,7 @@ namespace OptionalSharp.Tests {
 				[Fact]
 				static void NoneElseNone()
 				{
-					Assert.Equal(Optional.NoneOf<object>().OrMaybe(Optional.NoneOf<object>()), Optional.None);
+					Assert.Equal(Optional.NoneOf<object>().OrMaybe(Optional.NoneOf<object>()), Optional.None());
 				}
 				[Fact]
 				static void NoneElseSome()
@@ -40,18 +40,18 @@ namespace OptionalSharp.Tests {
 				[Fact]
 				static void SomeElseNone()
 				{
-					Assert.Equal(Optional.Some(5).OrMaybe(Optional.None), Optional.Some(5));
+					Assert.Equal(Optional.Some(5).OrMaybe(Optional.None()), Optional.Some(5));
 				}
 			}
 
 			public static class Map {
 				[Fact]
 				static void NoneMap() {
-					Assert.Equal(Optional.NoneOf<int>().Map(x => 5), Optional.None);
+					Assert.Equal(Optional.NoneOf<int>().Map(x => 5), Optional.None());
 				}
 				[Fact]
 				static void NoneMapNone() {
-					Assert.Equal(Optional.NoneOf<string>().Map(x => 8), Optional.None);
+					Assert.Equal(Optional.NoneOf<string>().Map(x => 8), Optional.None());
 				}
 
 				[Fact]
@@ -68,7 +68,7 @@ namespace OptionalSharp.Tests {
 				}
 				[Fact]
 				static void SomeMapNone() {
-					Assert.Equal(Optional.Some(5).MapMaybe(x => Optional.NoneOf<int>()), Optional.None);
+					Assert.Equal(Optional.Some(5).MapMaybe(x => Optional.NoneOf<int>()), Optional.None());
 				}
 
 				[Fact]
@@ -78,12 +78,12 @@ namespace OptionalSharp.Tests {
 
 				[Fact]
 				static void CastNone() {
-					Assert.Equal(Optional.NoneOf<int>().Cast<object>(), Optional.None);
+					Assert.Equal(Optional.NoneOf<int>().Cast<object>(), Optional.None());
 				}
 
 				[Fact]
 				static void BadCastNone() {
-					Assert.Equal(Optional.NoneOf<int>().Cast<string>(), Optional.None);
+					Assert.Equal(Optional.NoneOf<int>().Cast<string>(), Optional.None());
 				}
 
 				[Fact]
@@ -98,12 +98,12 @@ namespace OptionalSharp.Tests {
 
 				[Fact]
 				static void AsSomeFail() {
-					Assert.Equal(Optional.Some(5).As<string>(), Optional.None);
+					Assert.Equal(Optional.Some(5).As<string>(), Optional.None());
 				}
 
 				[Fact]
 				static void AsNone() {
-					Assert.Equal(Optional.NoneOf<int>().As<object>(), Optional.None);
+					Assert.Equal(Optional.NoneOf<int>().As<object>(), Optional.None());
 				}
 
 				[Fact]
@@ -113,12 +113,12 @@ namespace OptionalSharp.Tests {
 
 				[Fact]
 				static void FilterSomeFailure() {
-					Assert.Equal(Optional.Some(5).Filter(x => x != 5), Optional.None);
+					Assert.Equal(Optional.Some(5).Filter(x => x != 5), Optional.None());
 				}
 
 				[Fact]
 				static void FilterNone() {
-					Assert.Equal(Optional.NoneOf<int>().Filter(x => x != 5), Optional.None);
+					Assert.Equal(Optional.NoneOf<int>().Filter(x => x != 5), Optional.None());
 				}
 			}
 
@@ -126,7 +126,7 @@ namespace OptionalSharp.Tests {
 				[Fact]
 				static void FlattenObj() {
 					var x = Optional.Some<object>(null);
-					Assert.Equal(x.Flatten(), Optional.None);
+					Assert.Equal(x.Flatten(), Optional.None());
 				}
 				[Fact]
 				static void FlattenNested() {
@@ -140,7 +140,7 @@ namespace OptionalSharp.Tests {
 				static void FlattenOptionalOfNullable() {
 					var someNull = Optional.Some((int?) null);
 					Optional<int> flat = someNull.Flatten();
-					Assert.Equal(flat, Optional.None);
+					Assert.Equal(flat, Optional.None());
 					var someVal = Optional.Some((int?) 5);
 					flat = someVal.Flatten();
 					Assert.Equal(flat, 5);
@@ -149,7 +149,7 @@ namespace OptionalSharp.Tests {
 				static void FlattenNullableOfOptional() {
 					var someNull = (Optional<int>?) null;
 					Optional<int> flat = someNull.Flatten();
-					Assert.Equal(flat, Optional.None);
+					Assert.Equal(flat, Optional.None());
 					var someVal = (Optional<int>?) Optional.Some(5);
 					flat = someVal.Flatten();
 					Assert.Equal(flat, 5);

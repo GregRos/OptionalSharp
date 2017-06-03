@@ -17,7 +17,7 @@ namespace OptionalSharp.Tests {
 
 			[Fact]
 			static void Ctor_Some() {
-				var some = new Optional<int>(5);
+				var some = Optional.Some(5);
 				IsValidSome(some, 5);
 			}
 
@@ -36,7 +36,7 @@ namespace OptionalSharp.Tests {
 				var some3 = ((int?) null).AsOptionalSome();
 				IsValidSome(some3, null);
 				var some4 = (new Optional<int>()).AsOptionalSome();
-				IsValidSome(some4, Optional<int>.None);
+				IsValidSome(some4, Optional.NoneOf<int>());
 			}
 
 			[Fact]
@@ -69,7 +69,7 @@ namespace OptionalSharp.Tests {
 
 			[Fact]
 			static void Method_TokenNoneConversion() {
-				var noneToken = OptionalSharp.Optional.None;
+				var noneToken = OptionalSharp.Optional.None();
 				Optional<int> none1 = noneToken;
 				IsValidNone(none1);
 				Optional<object> none2 = noneToken;

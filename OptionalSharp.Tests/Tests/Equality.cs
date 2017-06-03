@@ -97,7 +97,7 @@ namespace OptionalSharp.Tests {
 				[Fact]
 				static void NoneAndToken() {
 					var none1 = Optional.NoneOf<int>();
-					var none2 = Optional.None;
+					var none2 = Optional.None();
 					OptionalsEqual(none1, none2);
 					Assert.True(none2.Equals(none1));
 				}

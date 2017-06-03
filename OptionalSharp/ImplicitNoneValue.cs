@@ -15,6 +15,9 @@ namespace OptionalSharp {
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		readonly object _reason;
 
+		/// <summary>
+		/// An object describing the reason for the lack of a value.
+		/// </summary>
 		public object Reason => _reason ?? MissingValueReason.NoReasonSpecified;
 
 		internal ImplicitNoneValue(object reason) {

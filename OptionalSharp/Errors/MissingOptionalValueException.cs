@@ -6,9 +6,15 @@ namespace OptionalSharp {
 	/// </summary>
 	[Serializable]
 	public class MissingOptionalValueException : InvalidOperationException {
+		/// <summary>
+		/// The reason why the value is missing, as described by the Optional's Reason property.
+		/// </summary>
 		public object Reason { get; }
 
-		public Type Type { get; set; }
+		/// <summary>
+		/// The inner type of the Optional the value of which is missing.
+		/// </summary>
+		public Type Type { get; }
 
 		private static string GetMessage(Type t, object reason, string message) {
 			string typeName = t == null ? "an unknown type" : "type " + t.PrettyName();

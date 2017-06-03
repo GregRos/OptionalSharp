@@ -67,6 +67,15 @@ namespace OptionalSharp {
 		}
 
 		/// <summary>
+		///		Returns the inner value or, if none exists, calls the given factory method to create a value.
+		/// </summary>
+		/// <param name="factory">The factory method to generate a value.</param>
+		/// <returns></returns>
+		public T OrCall(Func<T> factory) {
+			return HasValue ? Value : factory();
+		}
+
+		/// <summary>
 		///		Similar to <c>??</c>. Returns this instance's inner value, or the other default value if this is None.
 		/// </summary>
 		/// <param name="default">The default value.</param>

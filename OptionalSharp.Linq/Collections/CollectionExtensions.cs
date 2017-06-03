@@ -6,14 +6,23 @@ using System.Text;
 using System.Threading.Tasks;
 namespace OptionalSharp.Linq
 {
+	internal static class MissingReasons {
+		public static readonly string KeyNotFound = $"A key was not found in a dictionary.";
+
+		public static readonly string IndexNotFound = "An element was not found at a given index in a collection.";
+
+		public static readonly string CollectionWasEmpty = "A sequence or collection contained no elements.";
+
+		public static readonly string NoElementsFound = "No element matching the given predicate was found.";
+	}
 	public static class CollectionExtensions
 	{
 		public static Optional<TValue> TryGet<TKey, TValue>(this IDictionary<TKey, TValue> @this, TKey key) {
-			return @this.ContainsKey(key) ? @this[key].AsOptionalSome() : Optional.None();
+			return @this.ContainsKey(key) ? @this[key].AsOptionalSome() : Optional.None(MissingReasons.KeyNotFound);
 		}
 
 		public static Optional<T> TryGet<T>(this IList<T> @this, int index) {
-			return @this.Count > index ? @this[index].AsOptionalSome() : Optional.None();
+			return @this.Count > index ? @this[index].AsOptionalSome() : Optional.None(MissingReasons.IndexNotFound);
 		}
 
 		public static Optional<T> TryFirst<T>(this IEnumerable<T> @this) {
@@ -21,17 +30,17 @@ namespace OptionalSharp.Linq
 				if (iter.MoveNext()) {
 					return iter.Current.AsOptionalSome();
 				}
-				return Optional.None();
+				return Optional.None(MissingReasons.CollectionWasEmpty);
 			}
 		}
 
 		public static Optional<T> TryFirst<T>(this IEnumerable<T> @this, Func<T, bool> predicate) {
-			return @this.Where(predicate).TryFirst();
+			return @this.Where(predicate).TryFirst().WithReason(MissingReasons.NoElementsFound);
 		}
 
 		public static Optional<T> TryLast<T>(this IEnumerable<T> @this) {
 			var list = @this.ToList();
-			return list.Count == 0 ? Optional.None() : list[list.Count - 1].AsOptionalSome();
+			return list.Count == 0 ? Optional.None(MissingReasons.CollectionWasEmpty) : list[list.Count - 1].AsOptionalSome();
 		}
 
 		public static Optional<T> TryElementAt<T>(this IEnumerable<T> @this, int index) {
@@ -39,12 +48,12 @@ namespace OptionalSharp.Linq
 				while (iter.MoveNext() && index > 0) {
 					index--;
 				}
-				return index > 0 ? Optional.None() : iter.Current.AsOptionalSome();
+				return index > 0 ? Optional.None(MissingReasons.IndexNotFound) : iter.Current.AsOptionalSome();
 			}
 		}
 			 
 		public static Optional<T> TryLast<T>(this IEnumerable<T> @this, Func<T, bool> predicate) {
-			return @this.Where(predicate).TryLast();
+			return @this.Where(predicate).TryLast().WithReason(MissingReasons.NoElementsFound);
 		}
 
 		public static IEnumerable<TOut> Choose<T, TOut>(this IEnumerable<T> @this, Func<T, Optional<TOut>> selector) {
@@ -52,14 +61,12 @@ namespace OptionalSharp.Linq
 		}
 
 		public static Optional<TOut> TryPick<T, TOut>(this IEnumerable<T> @this, Func<T, Optional<TOut>> selector) {
-			return @this.Select(selector).TryFirst(x => x.HasValue).Flatten();
+			return @this.Select(selector).TryFirst(x => x.HasValue).Flatten().WithReason(MissingReasons.NoElementsFound);
 		}
 
 		public static IEnumerable<T> Flatten<T>(this IEnumerable<Optional<T>> @this) {
 			return @this.Where(x => x.HasValue).Select(x => x.Value);
 		}
-
-
 
 		public static OptionalTaskAwaiter<T> GetAwaiter<T>(this Optional<Task<T>> @this)
 		{

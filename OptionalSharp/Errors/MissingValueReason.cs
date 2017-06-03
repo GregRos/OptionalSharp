@@ -1,9 +1,7 @@
 using System.Diagnostics;
 
 namespace OptionalSharp {
-	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	internal static class MissingValueReason {
-
 		internal static class FailedCast<TFrom, TTo> {
 			public static readonly string Reason = $"Could not cast from {typeof(TFrom).PrettyName()} to type {typeof(TTo).PrettyName()}";
 		}

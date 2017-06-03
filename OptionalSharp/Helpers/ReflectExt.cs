@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace OptionalSharp {
 	/// <summary>
@@ -25,7 +26,7 @@ namespace OptionalSharp {
 		/// <returns></returns>
 		public static string JustTypeName(this Type type) {
 			var typeDefeninition = type.Name;
-			var indexOf = typeDefeninition.IndexOf("`", StringComparison.InvariantCulture);
+			var indexOf = typeDefeninition.IndexOf("`", StringComparison.Ordinal);
 			return indexOf < 0 ? typeDefeninition : typeDefeninition.Substring(0, indexOf);
 		}
 

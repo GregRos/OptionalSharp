@@ -1,6 +1,9 @@
 # Optional#
 [![Build status](https://ci.appveyor.com/api/projects/status/u95y7i721ngdo35b?svg=true)](https://ci.appveyor.com/project/GregRos/optionalsharp)
 [![Code Coverage](https://codecov.io/gh/GregRos/OptionalSharp/branch/master/graph/badge.svg)](https://codecov.io/gh/GregRos/OptionalSharp)
+[![NuGet](https://img.shields.io/nuget/v/OptionalSharp.svg)](https://www.nuget.org/packages/OptionalSharp)
+
+
 Optional# implements what's known as an optional type: A type that represents a value that may not exist.
 
 Now, it's true that reference types *can* be null to represent a missing value, and nullable value types are also a thing. But `null` isn't very good at that job (or any job, really).

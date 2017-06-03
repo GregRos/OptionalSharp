@@ -29,22 +29,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Publish|AnyCPU'">
-    <OutputPath>bin\Publish\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Publish\OptionalSharp.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-NET4.6.1|AnyCPU'">
-    <OutputPath>bin\Release-NET4.6.1\</OutputPath>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'net461|AnyCPU' ">
+    <OutputPath>bin\net461\</OutputPath>
     <DefineConstants>TRACE;NET4_6;NET4_0;NET3_5</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -52,9 +44,10 @@
     <ErrorReport>prompt</ErrorReport>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\net461\OptionalSharp.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-NET3.5C|AnyCPU'">
-    <OutputPath>bin\Release-NET3.5C\</OutputPath>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'net35|AnyCPU' ">
+    <OutputPath>bin\net35\</OutputPath>
     <DefineConstants>TRACE;NET3_5</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -63,9 +56,10 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\net35\OptionalSharp.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-NET4.0C|AnyCPU' ">
-    <OutputPath>bin\Release-4.0C\</OutputPath>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'net40|AnyCPU' ">
+    <OutputPath>bin\net40\</OutputPath>
     <DefineConstants>TRACE; NET4_0; NET3_5</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -74,9 +68,10 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\net40\OptionalSharp.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-NET4.5C|AnyCPU'">
-    <OutputPath>bin\Release-NET4.5C\</OutputPath>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'net45|AnyCPU' ">
+    <OutputPath>bin\net45\</OutputPath>
     <DefineConstants>TRACE; NET4_0; NET3_5; NET4_5</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -84,11 +79,12 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <DocumentationFile>bin\net45\OptionalSharp.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" Condition="'$(Configuration)' != 'Release-3.5C'" />
+    <Reference Include="Microsoft.CSharp" Condition="'$(Configuration)' != 'net35'" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Errors\MissingValueReason.cs" />
@@ -107,13 +103,13 @@
     <Compile Include="Helpers\ReflectExt.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="OptionalSharp.nuspec" />
+    <None Include="OptionalSharp.nuspec">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>IF $(ConfigurationName) == Publish (
-   "$(SolutionDir)nuget\nuget.exe" pack "$(ProjectPath)" -OutputDirectory "$(SolutionDir)nupkgs" -Prop Configuration=$(ConfigurationName)
-)
-</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

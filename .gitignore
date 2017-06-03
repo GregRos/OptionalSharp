@@ -25,7 +25,7 @@ bld/
 NuGet.exe
 # Visual Studo 2015 cache/options directory
 .vs/
-
+nuget-package/
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*

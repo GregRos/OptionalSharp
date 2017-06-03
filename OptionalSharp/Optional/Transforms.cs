@@ -87,7 +87,6 @@ namespace OptionalSharp {
 		/// <summary>
 		/// Returns an Optional with its Reason property set to the given value, describing why no value is available.
 		/// </summary>
-		/// <typeparam name="T">The inner type.</typeparam>
 		/// <param name="reason">A reason object describing why no value is available.</param>
 		/// <returns></returns>
 		public Optional<T> WithReason(object reason) {

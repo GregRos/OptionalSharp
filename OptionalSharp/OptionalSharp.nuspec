@@ -2,31 +2,41 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<!-- Required elements-->
-		<id>$id$</id>
-		<version>$version$</version>
+		<id>OptionalSharp</id>
+		<version>0.6.0</version>
 		<title>
 			Optional#
 		</title>
 		<description>
-			Yet another implementation of an option/optional type for .NET.
+Yet another implementation of an option/optional type for .NET.
 
-			An Optional type explicitly represents the type of a value that may or may not exist. While you can do this with nulls, that has many drawbacks.
-			
-			Some of the benefits of this library over some others include comprehensive equality support, rich debugging information, cleaner API, support for reflecting over Optionals, and more.
+An Optional type explicitly represents the type of a value that may or may not exist. While you can do this with nulls, that has many drawbacks.
+
+Some of the benefits of this library over some others include comprehensive equality support, rich debugging information, cleaner API, support for reflecting over Optionals, and more.
 		</description>
-		<authors>$author$</authors>
-		<copyright>$copyright$</copyright>
+		<authors>Greg Ros</authors>
+		<copyright>Copyright © Greg Ros 2017</copyright>
 		<projectUrl>https://github.com/GregRos/OptionalSharp</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<owners>GregRos</owners>
-		<summary>$description$</summary>
-		<releaseNotes>No notes.</releaseNotes>
+		<summary>Implements a powerful yet simple optional type for .NET.</summary>
 		<licenseUrl>https://github.com/GregRos/OptionalSharp/blob/master/LICENSE</licenseUrl>
 		<tags>functional optional optional# optionalsharp option immutable null maybe none monad some</tags>
 		<iconUrl>https://raw.githubusercontent.com/GregRos/OptionalSharp/master/Images/OptionalSharp-Icon.png</iconUrl>
 		<packageTypes>
 			<packageType name="Dependency" />
 		</packageTypes>
+		<dependencies>
+			<group targetFramework="netstandard1.6">
+				<dependency id="System.Reflection.TypeExtensions" version="[4,5)"/>
+				<dependency id="System.Runtime.Serialization.Formatters" version="[4,5)"/>
+			</group>
+			<group targetFramework="netstandard1.4">
+				<dependency id="System.Reflection.TypeExtensions" version="[4,5)"/>
+				<dependency id="System.Runtime.Serialization.Formatters" version="[4,5)"/>
+			</group>
+		</dependencies>
 	</metadata>
+
 	<!-- Optional 'files' node -->
 </package>

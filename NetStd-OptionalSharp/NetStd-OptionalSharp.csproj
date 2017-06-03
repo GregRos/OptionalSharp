@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.6;netstandard1.4</TargetFrameworks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyName>OptionalSharp</AssemblyName>
+    <RootNamespace>OptionalSharp</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.6|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.6\OptionalSharp.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.4|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.4\OptionalSharp.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\OptionalSharp\Errors\Errors.cs" Link="Errors.cs" />
+    <Compile Include="..\OptionalSharp\Errors\MissingOptionalValueException.cs" Link="MissingOptionalValueException.cs" />
+    <Compile Include="..\OptionalSharp\Errors\MissingValueReason.cs" Link="MissingValueReason.cs" />
+    <Compile Include="..\OptionalSharp\Helpers\ReflectExt.cs" Link="ReflectExt.cs" />
+    <Compile Include="..\OptionalSharp\IAnyOptional.cs" Link="IAnyOptional.cs" />
+    <Compile Include="..\OptionalSharp\ImplicitNoneValue.cs" Link="ImplicitNoneValue.cs" />
+    <Compile Include="..\OptionalSharp\OptionalExtensions.cs" Link="OptionalExtensions.cs" />
+    <Compile Include="..\OptionalSharp\OptionalShared.cs" Link="OptionalShared.cs" />
+    <Compile Include="..\OptionalSharp\Optional\Conversions.cs" Link="Conversions.cs" />
+    <Compile Include="..\OptionalSharp\Optional\EqualityMembers.cs" Link="EqualityMembers.cs" />
+    <Compile Include="..\OptionalSharp\Optional\EqualityOperators.cs" Link="EqualityOperators.cs" />
+    <Compile Include="..\OptionalSharp\Optional\Optional.cs" Link="Optional.cs" />
+    <Compile Include="..\OptionalSharp\Optional\Transforms.cs" Link="Transforms.cs" />
+    <Compile Include="..\OptionalSharp\Properties\AssemblyInfo.cs" Link="AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.Serialization.Formatters" Version="4.3.0" />
+  </ItemGroup>
+
+</Project>

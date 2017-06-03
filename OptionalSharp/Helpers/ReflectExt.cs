@@ -15,7 +15,7 @@ namespace OptionalSharp {
 			if (type.GetGenericArguments().Length == 0) return type.Name;
 			var genericArguments = type.GetGenericArguments();
 			var unmangledName = type.JustTypeName();
-			return unmangledName + "<" + string.Join(",", genericArguments.Select(PrettyName)) + ">";
+			return unmangledName + "<" + string.Join(",", genericArguments.Select(PrettyName).ToArray()) + ">";
 		}
 
 		/// <summary>

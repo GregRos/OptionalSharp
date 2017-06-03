@@ -15,7 +15,7 @@ namespace OptionalSharp {
 		/// </summary>
 		object Value { get; }
 
-		/// <summary>
+	/// <summary>
 		/// Returns the declared inner type of the Optional.
 		/// </summary>
 		/// <returns></returns>

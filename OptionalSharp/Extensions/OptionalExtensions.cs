@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 namespace OptionalSharp {
 	/// <summary>
 	///     Static class with utility and extension methods for optional values.

@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionalSharp.Linq", "Optio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionalSharp.Tests", "OptionalSharp.Tests\OptionalSharp.Tests.csproj", "{5B1FF120-8B52-4278-97C3-896CFBCAF9C6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Commands", "Commands", "{DE8DFA21-3115-4CE9-B0CE-DEB44B4994DA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{DE8DFA21-3115-4CE9-B0CE-DEB44B4994DA}"
 	ProjectSection(SolutionItems) = preProject
 		Scripts\cover-report.cmd = Scripts\cover-report.cmd
 		Scripts\cover.cmd = Scripts\cover.cmd

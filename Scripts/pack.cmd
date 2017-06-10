@@ -1,3 +1,4 @@
+cd ..
 rmdir /s /q nuget-package
 SET MSBuild=C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild.exe
 for %%x in (net35, net45, net461, net40) do (

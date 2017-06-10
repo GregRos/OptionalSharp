@@ -7,7 +7,8 @@ build_script:
  - msbuild /verbosity:quiet "OptionalSharp.Tests\OptionalSharp.Tests.csproj"
 test_script:
  - dir
- - Scripts\cover.cmd
+ - cd Scripts
+ - cover.cmd
 after_test:
  - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
  - pip install codecov

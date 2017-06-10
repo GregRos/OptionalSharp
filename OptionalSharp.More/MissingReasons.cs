@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-namespace OptionalSharp.Linq
+﻿namespace OptionalSharp.More
 {
 	internal static class MissingReasons {
 		public static readonly string KeyNotFound = $"A key was not found in a dictionary.";

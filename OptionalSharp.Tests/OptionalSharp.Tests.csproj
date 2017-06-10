@@ -54,20 +54,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OptionalSharp.More\EnumerableTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\Basics.cs" />
-    <Compile Include="Tests\Conversions.cs" />
-    <Compile Include="Tests\Creation.cs" />
-    <Compile Include="Tests\Equality.cs" />
-    <Compile Include="Tests\Runtime.cs" />
-    <Compile Include="Tests\Stringify.cs" />
-    <Compile Include="Tests\Transforms.cs" />
+    <Compile Include="OptionalSharp\Basics.cs" />
+    <Compile Include="OptionalSharp\Conversions.cs" />
+    <Compile Include="OptionalSharp\Creation.cs" />
+    <Compile Include="OptionalSharp\Equality.cs" />
+    <Compile Include="OptionalSharp\Runtime.cs" />
+    <Compile Include="OptionalSharp\Stringify.cs" />
+    <Compile Include="OptionalSharp\Transforms.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OptionalSharp.More\OptionalSharp.More.csproj">
+      <Project>{37dfa99c-e730-4e7d-b87d-e8240df46638}</Project>
+      <Name>OptionalSharp.More</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OptionalSharp\OptionalSharp.csproj">
       <Project>{5C0C6C6C-CDB7-46FC-8495-3D8154184F75}</Project>
       <Name>OptionalSharp</Name>

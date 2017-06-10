@@ -1,8 +1,4 @@
-using System;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-
-namespace OptionalSharp.Linq {
+namespace OptionalSharp.More {
 	public static class ParallelExtensions {
 #if NET4_5
 		public static ParallelExtensions.OptionalTaskAwaiter<T> GetAwaiter<T>(this Optional<Task<T>> @this) {

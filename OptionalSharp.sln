@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionalSharp", "OptionalSharp\OptionalSharp.csproj", "{5C0C6C6C-CDB7-46FC-8495-3D8154184F75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionalSharp.Linq", "OptionalSharp.Linq\OptionalSharp.Linq.csproj", "{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionalSharp.Tests", "OptionalSharp.Tests\OptionalSharp.Tests.csproj", "{5B1FF120-8B52-4278-97C3-896CFBCAF9C6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{DE8DFA21-3115-4CE9-B0CE-DEB44B4994DA}"
@@ -24,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetStd-OptionalSharp", "NetStd-OptionalSharp\NetStd-OptionalSharp.csproj", "{65D2A517-F7F6-4020-9F02-200A4AC1C999}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetStd", "NetStd", "{D5E4D7BE-671C-4934-A0EB-C5325B716B8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionalSharp.More", "OptionalSharp.More\OptionalSharp.More.csproj", "{37DFA99C-E730-4E7D-B87D-E8240DF46638}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,19 +49,6 @@ Global
 		{5C0C6C6C-CDB7-46FC-8495-3D8154184F75}.Release-NET4.6.1|Any CPU.ActiveCfg = net461|Any CPU
 		{5C0C6C6C-CDB7-46FC-8495-3D8154184F75}.Release-NET4.6.1|Any CPU.Build.0 = net461|Any CPU
 		{5C0C6C6C-CDB7-46FC-8495-3D8154184F75}.Release-NS1.4+1.6|Any CPU.ActiveCfg = Release|Any CPU
-		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Release-NET3.5C|Any CPU.ActiveCfg = Release|Any CPU
-		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Release-NET3.5C|Any CPU.Build.0 = Release|Any CPU
-		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Release-NET4.0C|Any CPU.ActiveCfg = Release|Any CPU
-		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Release-NET4.0C|Any CPU.Build.0 = Release|Any CPU
-		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Release-NET4.5|Any CPU.ActiveCfg = Release|Any CPU
-		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Release-NET4.5|Any CPU.Build.0 = Release|Any CPU
-		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Release-NET4.6.1|Any CPU.ActiveCfg = Release|Any CPU
-		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Release-NET4.6.1|Any CPU.Build.0 = Release|Any CPU
-		{D12D2505-6DC5-4BE7-AF29-0352FAFFD394}.Release-NS1.4+1.6|Any CPU.ActiveCfg = Release|Any CPU
 		{5B1FF120-8B52-4278-97C3-896CFBCAF9C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5B1FF120-8B52-4278-97C3-896CFBCAF9C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B1FF120-8B52-4278-97C3-896CFBCAF9C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -85,6 +72,20 @@ Global
 		{65D2A517-F7F6-4020-9F02-200A4AC1C999}.Release-NET4.6.1|Any CPU.ActiveCfg = Release|Any CPU
 		{65D2A517-F7F6-4020-9F02-200A4AC1C999}.Release-NS1.4+1.6|Any CPU.ActiveCfg = Release|Any CPU
 		{65D2A517-F7F6-4020-9F02-200A4AC1C999}.Release-NS1.4+1.6|Any CPU.Build.0 = Release|Any CPU
+		{37DFA99C-E730-4E7D-B87D-E8240DF46638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37DFA99C-E730-4E7D-B87D-E8240DF46638}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37DFA99C-E730-4E7D-B87D-E8240DF46638}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37DFA99C-E730-4E7D-B87D-E8240DF46638}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37DFA99C-E730-4E7D-B87D-E8240DF46638}.Release-NET3.5C|Any CPU.ActiveCfg = Release|Any CPU
+		{37DFA99C-E730-4E7D-B87D-E8240DF46638}.Release-NET3.5C|Any CPU.Build.0 = Release|Any CPU
+		{37DFA99C-E730-4E7D-B87D-E8240DF46638}.Release-NET4.0C|Any CPU.ActiveCfg = Release|Any CPU
+		{37DFA99C-E730-4E7D-B87D-E8240DF46638}.Release-NET4.0C|Any CPU.Build.0 = Release|Any CPU
+		{37DFA99C-E730-4E7D-B87D-E8240DF46638}.Release-NET4.5|Any CPU.ActiveCfg = Release|Any CPU
+		{37DFA99C-E730-4E7D-B87D-E8240DF46638}.Release-NET4.5|Any CPU.Build.0 = Release|Any CPU
+		{37DFA99C-E730-4E7D-B87D-E8240DF46638}.Release-NET4.6.1|Any CPU.ActiveCfg = Release|Any CPU
+		{37DFA99C-E730-4E7D-B87D-E8240DF46638}.Release-NET4.6.1|Any CPU.Build.0 = Release|Any CPU
+		{37DFA99C-E730-4E7D-B87D-E8240DF46638}.Release-NS1.4+1.6|Any CPU.ActiveCfg = Release|Any CPU
+		{37DFA99C-E730-4E7D-B87D-E8240DF46638}.Release-NS1.4+1.6|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

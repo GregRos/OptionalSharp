@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using static OptionalSharp.Optional;
-namespace OptionalSharp.Linq {
+namespace OptionalSharp.More {
 	/// <summary>
 	/// Extension methods for <see cref="IEnumerable{T}"/> objects that utilize Optionals, or the other way around.
 	/// </summary>
@@ -35,7 +34,7 @@ namespace OptionalSharp.Linq {
 		/// <param name="key">The key to look up.</param>
 		/// <returns></returns>
 		/// <exception cref="ArgumentNullException">An argument was null.</exception>
-		public static Optional<TValue> TryGet<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> @this, TKey key) {
+		public static Optional<TValue> TryKey<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> @this, TKey key) {
 			if (@this == null) throw Errors.ArgumentNull(nameof(@this));
 			bool success;
 			TValue v;
@@ -50,7 +49,7 @@ namespace OptionalSharp.Linq {
 			else {
 				var kEq = EqualityComparer<TKey>.Default;
 				var fst = @this.TryFirst(kvp => kEq.Equals(kvp.Key, key));
-				return fst.Select(x => x.Value);
+				return fst.Select(x => x.Value).WithReason(MissingReasons.KeyNotFound);
 			}
 			return success ? Optional.Some(v) : Optional.None(MissingReasons.KeyNotFound);
 		}
@@ -62,11 +61,12 @@ namespace OptionalSharp.Linq {
 		/// <param name="this">The sequence or collection.</param>
 		/// <param name="predicate">The predicate.</param>
 		/// <returns></returns>
+		/// <param name="reason">Optionally, an object describing the reason why no value might be found.</param>
 		/// <exception cref="ArgumentNullException">An argument was null.</exception>
-		public static Optional<T> TryFirst<T>(this IEnumerable<T> @this, Func<T, bool> predicate) {
+		public static Optional<T> TryFirst<T>(this IEnumerable<T> @this, Func<T, bool> predicate, Optional<object> reason = default(Optional<object>)) {
 			if (@this == null) throw Errors.ArgumentNull(nameof(@this));
 			if (predicate == null) throw Errors.ArgumentNull(nameof(predicate));
-			return @this.Where(predicate).TryFirst().WithReason(MissingReasons.NoElementsFound);
+			return @this.Where(predicate).TryFirst().WithReason(reason.Or(MissingReasons.NoElementsFound));
 		}
 		/// <summary>
 		/// Tries to return the last element in the sequence. If the sequence is empty, returns None.
@@ -115,12 +115,13 @@ namespace OptionalSharp.Linq {
 		/// <typeparam name="T">The type of the element.</typeparam>
 		/// <param name="this">The sequence or list.</param>
 		/// <param name="predicate">The predicate.</param>
+		/// <param name="reason">Optionally, an object describing the reason why no value might be found.</param>
 		/// <exception cref="ArgumentNullException">An argument was null.</exception>
 		/// <returns></returns>
-		public static Optional<T> TryLast<T>(this IEnumerable<T> @this, Func<T, bool> predicate) {
+		public static Optional<T> TryLast<T>(this IEnumerable<T> @this, Func<T, bool> predicate, Optional<object> reason = default(Optional<object>)) {
 			if (@this == null) throw Errors.ArgumentNull(nameof(@this));
 			if (predicate == null) throw Errors.ArgumentNull(nameof(predicate));
-			return @this.Where(predicate).TryLast().WithReason(MissingReasons.NoElementsFound);
+			return @this.Where(predicate).TryLast().WithReason(reason.Or(MissingReasons.NoElementsFound));
 		}
 
 		/// <summary>
@@ -150,7 +151,14 @@ namespace OptionalSharp.Linq {
 		public static Optional<TOut> TryPick<T, TOut>(this IEnumerable<T> @this, Func<T, Optional<TOut>> selector) {
 			if (@this == null) throw Errors.ArgumentNull(nameof(@this));
 			if (selector == null) throw Errors.ArgumentNull(nameof(selector));
-			return @this.Select(selector).TryFirst(x => x.HasValue).Flatten().WithReason(MissingReasons.NoElementsFound);
+			var reason = Optional.NoneOf<object>();
+			return @this.Select(x => {
+				var y = selector(x);
+				if (!reason.HasValue && !y.HasValue) {
+					reason = y.Reason;
+				}
+				return y;
+			}).TryFirst(x => x.HasValue).Flatten().WithReason(reason.Or(MissingReasons.NoElementsFound));
 		}
 
 		/// <summary>
@@ -168,61 +176,33 @@ namespace OptionalSharp.Linq {
 		}
 
 		/// <summary>
-		/// Projects every element of a sequence into an <see cref="IEnumerable{T}"/> of <see cref="Optional{T}"/>, then flattens the sequence by filtering out None instances.
-		/// </summary>
-		/// <typeparam name="T">The type of the input sequence.</typeparam>
-		/// <typeparam name="TOut">The type of the output sequence.</typeparam>
-		/// <param name="this">The sequence.</param>
-		/// <param name="selector">The selector.</param>
-		/// <returns></returns>
-		/// <exception cref="ArgumentNullException">An argument was null.</exception>
-		public static IEnumerable<TOut> ChooseMany<T, TOut>(
-			this IEnumerable<T> @this, Func<T, IEnumerable<Optional<TOut>>> selector) {
-			if (@this == null) throw Errors.ArgumentNull(nameof(@this));
-			if (selector == null) throw Errors.ArgumentNull(nameof(selector));
-
-			return @this.SelectMany(x => selector(x).Flatten());
-		}
-
-		/// <summary>
 		/// Flattens an <see cref="IEnumerable{T}"/> of <see cref="Optional{T}"/> by filtering out None instances.
 		/// </summary>
 		/// <typeparam name="T">The element type.</typeparam>
 		/// <param name="this">The sequence.</param>
 		/// <returns></returns>
 		/// <exception cref="ArgumentNullException">An argument was null.</exception>
-		public static IEnumerable<T> Flatten<T>(this IEnumerable<Optional<T>> @this) {
+		public static IEnumerable<T> FlattenSequence<T>(this IEnumerable<Optional<T>> @this) {
 			if (@this == null) throw Errors.ArgumentNull(nameof(@this));
 
 			return @this.Where(x => x.HasValue).Select(x => x.Value);
 		}
 
 		/// <summary>
-		/// Flattens a <see cref="Optional{T}"/> of <see cref="IEnumerable{T}"/> by returning the inner value, or else an empty sequence if none exists.
-		/// </summary>
-		/// <typeparam name="T">The type of the element.</typeparam>
-		/// <param name="this">The sequence.</param>
-		/// <returns></returns>
-		/// <exception cref="ArgumentNullException">An argument was null.</exception>
-		public static IEnumerable<T> Flatten<T>(this Optional<IEnumerable<T>> @this) {
-			if (@this == null) throw Errors.ArgumentNull(nameof(@this));
-
-			return @this.Or(new T[0]);
-		}
-		/// <summary>
 		/// Returns the single element in the sequence that fulfills the given predicate, or else None if no such element exists. Throws an exception if more than one element is found.
 		/// </summary>
 		/// <typeparam name="T">The type of the element.</typeparam>
 		/// <param name="this">The sequence.</param>
 		/// <param name="predicate">The predicate.</param>
+		/// <param name="reason">Optionally, an object describing the reason why no value might be found.</param>
 		/// <exception cref="ArgumentException">Thrown if the sequence contains more than one element matching the predicate.</exception>
 		/// <exception cref="ArgumentNullException">An argument was null.</exception>
 		/// <returns></returns>
-		public static Optional<T> TrySingle<T>(this IEnumerable<T> @this, Func<T, bool> predicate) {
+		public static Optional<T> TrySingle<T>(this IEnumerable<T> @this, Func<T, bool> predicate, Optional<object> reason = default(Optional<object>)) {
 			if (@this == null) throw Errors.ArgumentNull(nameof(@this));
 			if (predicate == null) throw Errors.ArgumentNull(nameof(predicate));
 
-			return @this.Where(predicate).TrySingle();
+			return @this.Where(predicate).TrySingle().WithReason(reason.Or(MissingReasons.NoElementsFound));
 		}
 
 		/// <summary>
@@ -238,7 +218,7 @@ namespace OptionalSharp.Linq {
 
 			using (var iter = @this.GetEnumerator())
 			{
-				if (!iter.MoveNext()) return Optional.None(MissingReasons.NoElementsFound);
+				if (!iter.MoveNext()) return Optional.None(MissingReasons.CollectionWasEmpty);
 				var val = iter.Current;
 				if (iter.MoveNext()) throw Errors.ExpectedNoMoreThanOneElement();
 				return val;

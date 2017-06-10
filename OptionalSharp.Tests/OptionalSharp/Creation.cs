@@ -51,25 +51,25 @@ namespace OptionalSharp.Tests {
 
 			[Fact]
 			static void Method_SomeStatic() {
-				var some = OptionalSharp.Optional.Some(5);
+				var some = Optional.Some(5);
 				IsValidSome(some, 5);
-				var some2 = OptionalSharp.Optional.Some<object>(null);
+				var some2 = Optional.Some<object>(null);
 				IsValidSome(some2, null);
-				var some3 = OptionalSharp.Optional.Some<int?>(null);
+				var some3 = Optional.Some<int?>(null);
 				IsValidSome(some3, null);
 			}
 
 			[Fact]
 			static void Method_NoneOf() {
-				var none = OptionalSharp.Optional.NoneOf<int>();
+				var none = Optional.NoneOf<int>();
 				IsValidNone(none);
-				var none2 = OptionalSharp.Optional.NoneOf<object>();
+				var none2 = Optional.NoneOf<object>();
 				IsValidNone(none2);
 			}
 
 			[Fact]
 			static void Method_TokenNoneConversion() {
-				var noneToken = OptionalSharp.Optional.None();
+				var noneToken = Optional.None();
 				Optional<int> none1 = noneToken;
 				IsValidNone(none1);
 				Optional<object> none2 = noneToken;

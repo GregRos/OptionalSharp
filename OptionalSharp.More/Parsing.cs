@@ -1,48 +1,32 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Globalization;
-using static OptionalSharp.Optional;
 using SystemDateTime = System.DateTime;
-
-namespace OptionalSharp.Linq {
+using static OptionalSharp.Optional;
+namespace OptionalSharp.More {
 	/// <summary>
 	/// Static class containing methods for utilizing <see cref="Optional{T}"/> for parsing common types.
 	/// </summary>
 	public static class TryParse {
+
 		/// <summary>
-		/// Static class containing methods for parsing <see cref="System.DateTime"/>.
+		/// Parses a string as a date using exact parsing information. 
+		/// See <seealso cref="SystemDateTime.ParseExact(string, string, IFormatProvider, DateTimeStyles)"/>.
 		/// </summary>
-		public static class DateTime {
-			/// <summary>
-			/// Parses a string as a date using exact parsing information. 
-			/// See <seealso cref="SystemDateTime.ParseExact(string, string, IFormatProvider, DateTimeStyles)"/>.
-			/// </summary>
-			/// <param name="value">The string to parse.</param>
-			/// <param name="format">A format specifier.</param>
-			/// <param name="provider">The format provider to use.</param>
-			/// <param name="styles">The styles to use.</param>
-			/// <returns></returns>
-			public static Optional<SystemDateTime> Exact(
-				string value, string format, IFormatProvider provider = null, DateTimeStyles styles =  DateTimeStyles.AssumeLocal) {
-
-				return SystemDateTime.TryParseExact(value, format, provider, styles, out var x) ? Some(x)
-					: None(MissingReasons.CouldNotBeParsedAs<SystemDateTime>.Value);
+		/// <param name="value">The string to parse.</param>
+		/// <param name="format">A format specifier. If <c>null</c>, TryParse is invoked. Otherwise, TryParseExact is invoked.</param>
+		/// <param name="provider">The format provider to use.</param>
+		/// <param name="styles">The styles to use.</param>
+		/// <returns></returns>
+		public static Optional<System.DateTime> DateTime(
+			string value, string format = null, IFormatProvider provider = null, DateTimeStyles styles = DateTimeStyles.AssumeLocal) {
+			var none = None(MissingReasons.CouldNotBeParsedAs<SystemDateTime>.Value);
+			if (format == null) {
+				return System.DateTime.TryParse(value, provider, styles, out var a) ? Some(a) : none;
 			}
-
-			/// <summary>
-			/// Parses a string as a date using implicit parsing information.
-			/// See <seealso cref="SystemDateTime.Parse(string, IFormatProvider, DateTimeStyles)"/>.
-			/// </summary>
-			/// <param name="value">The string to parse.</param>
-			/// <param name="provider">The provider to use.</param>
-			/// <param name="styles">The styles to use.</param>
-			/// <returns></returns>
-			public static Optional<SystemDateTime> Loose(
-				string value, IFormatProvider provider = null, DateTimeStyles styles = DateTimeStyles.AssumeLocal) {
-				return SystemDateTime.TryParse(value, provider, styles, out var x) ? Some(x)
-					: None(MissingReasons.CouldNotBeParsedAs<SystemDateTime>.Value);
-			}
+			return SystemDateTime.TryParseExact(value, format, provider, styles, out var b) ? Some(b) : none;
 		}
+
+		
 
 		/// <summary>
 		/// Tries to parse a <see cref="System.Int32"/>, returning None if the parsing fails.
@@ -50,6 +34,8 @@ namespace OptionalSharp.Linq {
 		/// <param name="value">The string to parse</param>
 		/// <returns></returns>
 		public static Optional<int> Int32(string value) {
+
+			
 			return int.TryParse(value, out var x) ? Some(x) : None(MissingReasons.CouldNotBeParsedAs<int>.Value);
 		}
 
@@ -149,6 +135,22 @@ namespace OptionalSharp.Linq {
 		public static Optional<bool> Bool(string value) {
 			return bool.TryParse(value, out var x) ? Some(x) : None(MissingReasons.CouldNotBeParsedAs<bool>.Value);
 		}
+
+		public static Optional<Guid> Guid(string value, string format) {
+			var none = None(MissingReasons.CouldNotBeParsedAs<Guid>.Value);
+			if (format == null) {
+				return System.Guid.TryParse(value, out var a) ? Some(a) : none; 
+			}
+			return System.Guid.TryParseExact(value, format, out var x) ? Some(x) : none;
+		}
+
+		public static Optional<TimeSpan> TimeSpan(string value, string format = null, IFormatProvider provider = null) {
+			var none = None(MissingReasons.CouldNotBeParsedAs<TimeSpan>.Value);
+			if (format == null) {
+				return System.TimeSpan.TryParse(value, provider, out var a) ? Some(a) : none;
+			}
+			return System.TimeSpan.TryParseExact(value, format, provider, out var b) ? Some(b) : none;
+		}
 		
 		/// <summary>
 		/// Tries to parse an enum of type <typeparamref name="TEnum"/>, returning None if the parsing fails.
@@ -173,7 +175,7 @@ namespace OptionalSharp.Linq {
 		/// <param name="value">The string to parse.</param>
 		/// <exception cref="ArgumentException">Cannot parse strings as <typeparamref name="T"/>.</exception>
 		/// <returns></returns>
-		public static Optional<T> Dynamically<T>(string value)
+		public static Optional<T> Generic<T>(string value)
 			where T : struct, IFormattable {
 			var t = typeof(T);
 			if (t == typeof(int)) {
@@ -216,7 +218,7 @@ namespace OptionalSharp.Linq {
 				return (T) (object) Char(value);
 			}
 			if (t == typeof(DateTime)) {
-				return (T) (object) DateTime.Loose(value);
+				return (T) (object) DateTime(value);
 			}
 			if (t.IsEnum) {
 				return (T) (object) Enum<T>(value);

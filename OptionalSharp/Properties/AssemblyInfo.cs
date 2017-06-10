@@ -10,8 +10,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("Greg Ros")]
 [assembly: AssemblyProduct("OptionalSharp")]
 [assembly: AssemblyCopyright("Copyright © Greg Ros 2017")]
-[assembly: InternalsVisibleTo("OptionalSharp.Linq")]
 [assembly: InternalsVisibleTo("OptionalSharp.Tests")]
+[assembly: InternalsVisibleTo("OptionalSharp.More")]
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
 // COM, set the ComVisible attribute to true on that type.

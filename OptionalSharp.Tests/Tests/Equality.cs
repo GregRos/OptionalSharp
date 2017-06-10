@@ -45,7 +45,7 @@ namespace OptionalSharp.Tests {
 				if (b != null) {
 					Assert.Equal(a.GetHashCode(), b.GetHashCode());
 				}
-				
+
 				if (b is Optional<T1> o) {
 					Assert.True(a.Equals(o));
 					Assert.True(a == o);
@@ -57,6 +57,7 @@ namespace OptionalSharp.Tests {
 					Assert.True(!(a != i));
 					Assert.True(i.Equals(a));
 					Assert.True(a.Equals((object)a));
+					Assert.True(i.Equals((object) a));
 				}
 				else if (b is T1 v) {
 					Assert.True(a.ValueEquals(v));
@@ -70,6 +71,8 @@ namespace OptionalSharp.Tests {
 					Assert.False(a.Equals(i));
 					Assert.False(a == i);
 					Assert.False(!(a != i));
+					Assert.False(i.Equals((IAnyOptional)a));
+					Assert.False(i.Equals((object) a));
 				}
 
 				if (b is Optional<T1> o) {
@@ -107,6 +110,22 @@ namespace OptionalSharp.Tests {
 					var none1 = Optional.NoneOf<CustomType>();
 					var none2 = Optional.NoneOf<int>();
 					OptionalsEqual(none1, none2);
+				}
+
+				[Fact]
+				static void SomeAndUnrelatedObject() {
+					var some = Optional.Some(5);
+					Assert.False(some.Equals("a"));
+					Assert.False(some.Equals(null));
+				}
+
+				[Fact]
+				static void NoneAndUnrelatedObject() {
+					var none = Optional.NoneOf<int>();
+					Assert.False(none.Equals("a"));
+					var none2 = Optional.None();
+					Assert.False(none2.Equals("b"));
+					Assert.False(none2.Equals(null));
 				}
 			}
 

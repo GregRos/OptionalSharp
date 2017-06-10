@@ -8,11 +8,8 @@ namespace OptionalSharp {
 		/// </summary>
 		/// <param name="other">The other Optional.</param>
 		/// <returns></returns>
-		/// <exception cref="ArgumentNullException">Thrown if the argument is null. This method cannot accept a null argument because <c>null</c> is not considered a proper value for an Optional.</exception>
 		public bool Equals(IAnyOptional other) {
-			if (other == null) {
-				throw Errors.ArgumentNull("other");
-			}
+			if (other == null) return false;
 			return (!HasValue && !other.HasValue) || (HasValue && other.HasValue && Equals(Value, other.Value));
 		}
 

@@ -9,6 +9,11 @@ namespace OptionalSharp.Tests {
 				var opt = Optional.Some(5);
 				Assert.Equal(opt.ToDebugString(), "Some<Int32>(5)");
 			}
+			[Fact]
+			static void NoneToken_ToDebugString() {
+				var opt = Optional.None();
+				Assert.Equal(opt.ToDebugString(), "NoneOf<*>");
+			}
 
 			[Fact]
 			static void Optional_None_ToDebugString() {

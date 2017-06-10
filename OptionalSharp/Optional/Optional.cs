@@ -136,15 +136,23 @@ namespace OptionalSharp {
 		/// </summary>
 		/// <param name="any">The inner value. If <c>null</c>, its inner type will be considered <see cref="object"/>.</param>
 		/// <param name="typeOverride">Optionally, the explicit inner type of the resulting <see cref="Optional{T}"/>. Must be compatible with the value.</param>
+		/// <exception cref="ArgumentException">
+		/// Thrown if <paramref name="any"/> is not assignable to the type <paramref name="typeOverride"/>, if that parameter has been specified.
+		/// -or- If <paramref name="typeOverride"/> is not a valid inner type, (e.g. and unconstructed generic type)
+		/// </exception>
 		/// <returns></returns>
 		public static IAnyOptional RuntimeCreateSome(object any, Optional<Type> typeOverride = default(Optional<Type>))
 		{
 			var innerType = any?.GetType() ?? typeof(object);
-			if (typeOverride.HasValue)
-			{
-				if (!typeOverride.Value.IsAssignableFrom(innerType)) throw Errors.InvalidType(nameof(typeOverride));
-				innerType = typeOverride.Value;
-			}
+			
+			typeOverride.Do(t => {
+				if (!t.IsAssignableFrom(innerType)
+				|| t.IsInstanceOfType(typeof(ValueType)) && any == null) {
+					throw Errors.InvalidType(nameof(typeOverride));
+				}
+				innerType = t;
+			});
+
 			var method = typeof(Optional).GetMethod(nameof(Some)).MakeGenericMethod(innerType);
 			var result = method.Invoke(null, new[] {any});
 			return (IAnyOptional)result;

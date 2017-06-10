@@ -9,6 +9,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.6|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.6\OptionalSharp.xml</DocumentationFile>
+    <DefineConstants>TRACE;val</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.4|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.4\OptionalSharp.xml</DocumentationFile>

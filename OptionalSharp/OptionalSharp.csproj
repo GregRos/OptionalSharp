@@ -82,11 +82,6 @@
     <DocumentationFile>bin\net45\OptionalSharp.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" Condition="'$(Configuration)' != 'net35'" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Errors\MissingValueReason.cs" />
     <Compile Include="ImplicitNoneValue.cs" />
     <Compile Include="Errors\Errors.cs" />
@@ -106,6 +101,10 @@
     <None Include="OptionalSharp.nuspec">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -10,22 +10,22 @@ namespace OptionalSharp.Tests {
 				[Fact]
 				static void NoneElseVal()
 				{
-					Assert.Equal(Optional.NoneOf<int>().Or(5), 5);
+					Assert.Equal(Optional.NoneOf<int>("test").Or(5), 5);
 				}
 				[Fact]
-				static void NoneElseNone()
-				{
-					Assert.Equal(Optional.NoneOf<object>().OrMaybe(Optional.NoneOf<object>()), Optional.None());
+				static void NoneElseNone() {
+					var orMaybe = Optional.NoneOf<object>("a").OrMaybe(Optional.NoneOf<object>("b"));
+					Assert.Equal(orMaybe, Optional.None());
+					Assert.Equal(orMaybe.Reason, "b");
 				}
 				[Fact]
-				static void NoneElseSome()
-				{
-					Assert.Equal(Optional.NoneOf<int>().OrMaybe(Optional.Some(5)), 5);
+				static void NoneElseSome() {
+					Assert.Equal(Optional.NoneOf<int>("a").OrMaybe(Optional.Some(5)), 5.AsOptionalSome());
 				}
 				[Fact]
 				static void NoneElseNull()
 				{
-					Assert.Equal(Optional.NoneOf<object>().Or(null), null);
+					Assert.Equal(Optional.NoneOf<object>("a").Or(null), null);
 				}
 				[Fact]
 				static void SomeElseVal()
@@ -38,37 +38,41 @@ namespace OptionalSharp.Tests {
 					Assert.Equal(Optional.Some(5).OrMaybe(Optional.Some(4)), Optional.Some(5));
 				}
 				[Fact]
-				static void SomeElseNone()
-				{
-					Assert.Equal(Optional.Some(5).OrMaybe(Optional.None()), Optional.Some(5));
+				static void SomeElseNone() {
+					var orMaybe = Optional.Some(5).OrMaybe(Optional.None("a"));
+					Assert.Equal(orMaybe, Optional.Some(5));
+				}
+
+				[Fact]
+				static void OrCall() {
+					Assert.Equal(Optional.Some(5).OrCall(() => 6), 5);
+					Assert.Equal(Optional.NoneOf<int>().OrCall(() => 6), 6);
 				}
 			}
 
 			public static class Map {
 				[Fact]
 				static void NoneMap() {
-					Assert.Equal(Optional.NoneOf<int>().Map(x => 5), Optional.None());
-				}
-				[Fact]
-				static void NoneMapNone() {
-					Assert.Equal(Optional.NoneOf<string>().Map(x => 8), Optional.None());
+					var expected = Optional.NoneOf<int>("a").Select(x => 5);
+					Assert.Equal(expected, Optional.None());
+					Assert.Equal(expected.Reason, "a");
 				}
 
 				[Fact]
 				static void SomeMapNull() {
-					Assert.Equal(Optional.Some(5).Map(x => (object)null), null);
+					Assert.Equal(Optional.Some(5).Select(x => (object)null), null);
 				}
 				[Fact]
 				static void SomeMapVal() {
-					Assert.Equal(Optional.Some(5).Map(x => x + 5), 10);
+					Assert.Equal(Optional.Some(5).Select(x => x + 5), 10);
 				}
 				[Fact]
 				static void SomeMapSome() {
-					Assert.Equal(Optional.Some(5).MapMaybe(x => Optional.Some(x + 5)), 10);
+					Assert.Equal(Optional.Some(5).SelectMaybe(x => Optional.Some(x + 5)), 10);
 				}
 				[Fact]
 				static void SomeMapNone() {
-					Assert.Equal(Optional.Some(5).MapMaybe(x => Optional.NoneOf<int>()), Optional.None());
+					Assert.Equal(Optional.Some(5).SelectMaybe(x => Optional.NoneOf<int>()), Optional.None());
 				}
 
 				[Fact]
@@ -78,12 +82,23 @@ namespace OptionalSharp.Tests {
 
 				[Fact]
 				static void CastNone() {
-					Assert.Equal(Optional.NoneOf<int>().Cast<object>(), Optional.None());
+					var expected = Optional.NoneOf<int>("a").Cast<object>();
+					Assert.Equal(expected, Optional.None());
+					Assert.Equal(expected.Reason, "a");
+				}
+
+				[Fact]
+				static void WithReason() {
+					var expected = Optional.NoneOf<int>("a").WithReason("b");
+					Assert.Equal(expected, Optional.None());
+					Assert.Equal(expected.Reason, "b");
 				}
 
 				[Fact]
 				static void BadCastNone() {
-					Assert.Equal(Optional.NoneOf<int>().Cast<string>(), Optional.None());
+					var expected = Optional.NoneOf<int>("a").Cast<string>();
+					Assert.Equal(expected, Optional.None());
+					Assert.Equal(expected.Reason, "a");
 				}
 
 				[Fact]
@@ -93,32 +108,48 @@ namespace OptionalSharp.Tests {
 
 				[Fact]
 				static void AsSomeSuccess() {
-					Assert.Equal(Optional.Some(5).As<object>(), 5);
+					Assert.Equal(Optional.Some(5).OfType<object>(), 5);
 				}
 
 				[Fact]
 				static void AsSomeFail() {
-					Assert.Equal(Optional.Some(5).As<string>(), Optional.None());
+					var ofType = Optional.Some(5).OfType<string>();
+					Assert.Equal(ofType, Optional.None());
+					Assert.Equal(ofType.Reason, MissingValueReason.FailedCast<int, string>.Reason);
 				}
 
 				[Fact]
 				static void AsNone() {
-					Assert.Equal(Optional.NoneOf<int>().As<object>(), Optional.None());
+					var ofType = Optional.NoneOf<int>("a").OfType<object>();
+					Assert.Equal(ofType, Optional.None());
+					Assert.Equal(ofType.Reason, "a");
 				}
 
 				[Fact]
 				static void FilterSomeSuccess() {
-					Assert.Equal(Optional.Some(5).Filter(x => x == 5), 5);
+					Assert.Equal(Optional.Some(5).Where(x => x == 5, "test"), 5);
 				}
 
 				[Fact]
 				static void FilterSomeFailure() {
-					Assert.Equal(Optional.Some(5).Filter(x => x != 5), Optional.None());
+					var expected = Optional.Some(5).Where(x => x != 5, "a");
+					Assert.Equal(expected, Optional.None());
+					Assert.Equal(expected.Reason, "a");
 				}
 
 				[Fact]
 				static void FilterNone() {
-					Assert.Equal(Optional.NoneOf<int>().Filter(x => x != 5), Optional.None());
+					var expected = Optional.NoneOf<int>("a").Where(x => x != 5, "b");
+					Assert.Equal(expected, Optional.None());
+					Assert.Equal(expected.Reason, "a");
+				}
+			}
+
+			public static class OrError {
+				[Fact]
+				static void ValueOrError() {
+					var x = Optional.NoneOf<int>();
+					Assert.Throws<DllNotFoundException>(() => x.ValueOrError(new DllNotFoundException("test")));
 				}
 			}
 
@@ -141,6 +172,7 @@ namespace OptionalSharp.Tests {
 					var someNull = Optional.Some((int?) null);
 					Optional<int> flat = someNull.Flatten();
 					Assert.Equal(flat, Optional.None());
+					Assert.Equal(flat.Reason, MissingValueReason.ConvertedFromNull);
 					var someVal = Optional.Some((int?) 5);
 					flat = someVal.Flatten();
 					Assert.Equal(flat, 5);
@@ -150,6 +182,7 @@ namespace OptionalSharp.Tests {
 					var someNull = (Optional<int>?) null;
 					Optional<int> flat = someNull.Flatten();
 					Assert.Equal(flat, Optional.None());
+					Assert.Equal(flat.Reason, MissingValueReason.ConvertedFromNull);
 					var someVal = (Optional<int>?) Optional.Some(5);
 					flat = someVal.Flatten();
 					Assert.Equal(flat, 5);

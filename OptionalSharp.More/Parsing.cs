@@ -136,7 +136,13 @@ namespace OptionalSharp.More {
 			return bool.TryParse(value, out var x) ? Some(x) : None(MissingReasons.CouldNotBeParsedAs<bool>.Value);
 		}
 
-		public static Optional<Guid> Guid(string value, string format) {
+		/// <summary>
+		/// Tries to parse a <see cref="System.Guid"/>, returning None if the parsing fails.
+		/// </summary>
+		/// <param name="value">The string to parse.</param>
+		/// <param name="format">The format of the Guid.</param>
+		/// <returns></returns>
+		public static Optional<Guid> Guid(string value, string format = null) {
 			var none = None(MissingReasons.CouldNotBeParsedAs<Guid>.Value);
 			if (format == null) {
 				return System.Guid.TryParse(value, out var a) ? Some(a) : none; 
@@ -144,6 +150,13 @@ namespace OptionalSharp.More {
 			return System.Guid.TryParseExact(value, format, out var x) ? Some(x) : none;
 		}
 
+		/// <summary>
+		/// Tries to parse a <see cref="System.TimeSpan"/>, returning None if the parsing fails.
+		/// </summary>
+		/// <param name="value">The string to parse.</param>
+		/// <param name="format">The format of the time span.</param>
+		/// <param name="provider">The format provider.</param>
+		/// <returns></returns>
 		public static Optional<TimeSpan> TimeSpan(string value, string format = null, IFormatProvider provider = null) {
 			var none = None(MissingReasons.CouldNotBeParsedAs<TimeSpan>.Value);
 			if (format == null) {
@@ -167,67 +180,6 @@ namespace OptionalSharp.More {
 			}
 			return System.Enum.TryParse<TEnum>(value, ignoreCase, out var x) ? Some(x) : None(MissingReasons.CouldNotBeParsedAs<TEnum>.Value);
 		}
-		
-		/// <summary>
-		/// Tries to parse a string as a value of type <typeparamref name="T"/>, where <typeparamref name="T"/> must be a paraseable type.
-		/// </summary>
-		/// <typeparam name="T">The type to parse the string as. Must be an integral type, <see cref="DateTime"/>, or an enum.</typeparam>
-		/// <param name="value">The string to parse.</param>
-		/// <exception cref="ArgumentException">Cannot parse strings as <typeparamref name="T"/>.</exception>
-		/// <returns></returns>
-		public static Optional<T> Generic<T>(string value)
-			where T : struct, IFormattable {
-			var t = typeof(T);
-			if (t == typeof(int)) {
-				return (T) (object) Int32(value);
-			}
-			if (t == typeof(long)) {
-				return (T) (object) Int64(value);
-			}
-			if (t == typeof(float)) {
-				return (T) (object) Float(value);
-			}
-			if (t == typeof(double)) {
-				return (T) (object) Double(value);
-			}
-			if (t == typeof(decimal)) {
-				return (T) (object) Decimal(value);
-			}
-			if (t == typeof(bool)) {
-				return (T) (object) Bool(value);
-			}
-			if (t == typeof(byte)) {
-				return (T) (object) Byte(value);
-			}
-			if (t == typeof(sbyte)) {
-				return (T) (object) SByte(value);
-			}
-			if (t == typeof(short)) {
-				return (T) (object) Int16(value);
-			}
-			if (t == typeof(uint)) {
-				return (T) (object) UInt32(value);
-			}
-			if (t == typeof(ulong)) {
-				return (T) (object) UInt64(value);
-			}
-			if (t == typeof(ushort)) {
-				return (T) (object) UInt16(value);
-			}
-			if (t == typeof(char)) {
-				return (T) (object) Char(value);
-			}
-			if (t == typeof(DateTime)) {
-				return (T) (object) DateTime(value);
-			}
-			if (t.IsEnum) {
-				return (T) (object) Enum<T>(value);
-			}
-			if (t == typeof(string) || t.IsAssignableFrom(typeof(string))) {
-				return (T)(object)value;
-			}
-
-			throw Errors.InvalidParseType(typeof(T));
-		}
+	
 	}
 }

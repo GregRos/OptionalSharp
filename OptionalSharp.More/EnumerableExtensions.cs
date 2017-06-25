@@ -206,6 +206,57 @@ namespace OptionalSharp.More {
 		}
 
 		/// <summary>
+		/// Returns the index of the first element in the sequence that fulfills the given predicate.
+		/// </summary>
+		/// <typeparam name="T">The type of the element.</typeparam>
+		/// <param name="this">The sequence.</param>
+		/// <param name="predicate">The predicate.</param>
+		/// <param name="reason">Optionally, an object describing the reason why no value might be found.</param>
+		/// <exception cref="ArgumentNullException">An argument was null.</exception>
+		/// <returns></returns>
+		public static Optional<int> TryFirstIndex<T>(
+			this IEnumerable<T> @this, Func<T, bool> predicate, Optional<object> reason = default(Optional<object>)) {
+			if (@this == null) throw Errors.ArgumentNull(nameof(@this));
+			if (predicate == null) throw Errors.ArgumentNull(nameof(predicate));
+			using (var iter = @this.GetEnumerator()) {
+				for (int i = 0; iter.MoveNext(); i++) {
+					if (predicate(iter.Current)) {
+						return i;
+					}
+				}
+			}
+			return None(reason.Or(MissingReasons.NoElementsFound));
+		}
+
+		/// <summary>
+		/// Returns the index of the last element in the sequence that fulfills the given predicate.
+		/// </summary>
+		/// <typeparam name="T">The type of the element.</typeparam>
+		/// <param name="this">The sequence.</param>
+		/// <param name="predicate">The predicate.</param>
+		/// <param name="reason">Optionally, an object describing the reason why no value might be found.</param>
+		/// <exception cref="ArgumentNullException">An argument was null.</exception>
+		/// <returns></returns>
+		public static Optional<int> TryLastIndex<T>(
+			this IEnumerable<T> @this, Func<T, bool> predicate, Optional<object> reason = default(Optional<object>))
+		{
+			if (@this == null) throw Errors.ArgumentNull(nameof(@this));
+			if (predicate == null) throw Errors.ArgumentNull(nameof(predicate));
+			var found = NoneOf<int>(reason.Or(MissingReasons.NoElementsFound));
+			using (var iter = @this.GetEnumerator()) {
+				
+				for (int i = 0; iter.MoveNext(); i++)
+				{
+					if (predicate(iter.Current))
+					{
+						found = i;
+					}
+				}
+			}
+			return found;
+		}
+
+		/// <summary>
 		/// Returns the single element in the sequence, or else None if the sequence is empty. Throws an exception if the sequence has more than one element.
 		/// </summary>
 		/// <typeparam name="T">The type of the element.</typeparam>

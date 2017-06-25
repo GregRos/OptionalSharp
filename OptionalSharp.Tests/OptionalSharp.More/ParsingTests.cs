@@ -232,5 +232,53 @@ namespace OptionalSharp.Tests.OptionalSharp.More {
 				Assert.Equal(TryParse.Char(null), None());
 			}
 		}
+
+		public static class Guid {
+			[Fact]
+			static void Success() {
+				var guid = System.Guid.NewGuid();
+				Assert.Equal(TryParse.Guid(guid.ToString()), Some(guid));
+				Assert.Equal(TryParse.Guid(guid.ToString("X"), "X"), Some(guid));
+			}
+
+			[Fact]
+			static void Fail()
+			{
+				Assert.Equal(TryParse.Guid("ab"), None());
+				Assert.Equal(TryParse.Guid("ab", "X"), None());
+			}
+
+			[Fact]
+			static void Null()
+			{
+				Assert.Equal(TryParse.Guid(null), None());
+				Assert.Equal(TryParse.Guid(null, "X"), None());
+			}
+		}
+
+
+		public static class DateTime
+		{
+			[Fact]
+			static void Success()
+			{
+				var dt = System.DateTime.Now.Date;
+				Assert.Equal(TryParse.DateTime(dt.ToString("dd/MM/yyyy"), "dd/MM/yyyy"), Some(dt));
+			}
+
+			[Fact]
+			static void Fail()
+			{
+				Assert.Equal(TryParse.DateTime("ab"), None());
+				Assert.Equal(TryParse.DateTime("ab", "dd/MM/yyyy"), None());
+			}
+
+			[Fact]
+			static void Null()
+			{
+				Assert.Equal(TryParse.Guid(null), None());
+				Assert.Equal(TryParse.Guid(null, "dd/MM/yyyy"), None());
+			}
+		}
 	}
 }

@@ -1,3 +1,7 @@
+using System;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+
 namespace OptionalSharp.More {
 	public static class ParallelExtensions {
 #if NET4_5

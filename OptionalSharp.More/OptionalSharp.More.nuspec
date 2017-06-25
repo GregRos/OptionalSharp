@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<!-- Required elements-->
+		<id>OptionalSharp.More</id>
+		<version>0.7.0</version>
+		<title>
+			Optional#.More
+		</title>
+		<description>
+Extension methods and other objects for integrating the Optional# Optional type into .NET.
+		</description>
+		<authors>Greg Ros</authors>
+		<copyright>Copyright © Greg Ros 2017</copyright>
+		<projectUrl>https://github.com/GregRos/OptionalSharp</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<owners>GregRos</owners>
+		<summary>Extension methods and other objects for integrating OptionalSharp into .NET.</summary>
+		<licenseUrl>https://github.com/GregRos/OptionalSharp/blob/master/LICENSE</licenseUrl>
+		<tags>functional optional optional# optionalsharp option immutable null maybe none monad some</tags>
+		<iconUrl>https://raw.githubusercontent.com/GregRos/OptionalSharp/master/Images/OptionalSharp-Icon.png</iconUrl>
+		<packageTypes>
+			<packageType name="Dependency" />
+		</packageTypes>
+		<dependencies>
+			<group targetFramework="netstandard1.6">
+				<dependency id="System.Reflection.TypeExtensions" version="[4,5)"/>
+				<dependency id="System.Runtime.Serialization.Formatters" version="[4,5)"/>
+			</group>
+			<group targetFramework="netstandard1.4">
+				<dependency id="System.Reflection.TypeExtensions" version="[4,5)"/>
+				<dependency id="System.Runtime.Serialization.Formatters" version="[4,5)"/>
+			</group>
+		</dependencies>
+	</metadata>
+</package>

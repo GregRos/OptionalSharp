@@ -41,7 +41,7 @@ namespace OptionalSharp.More {
 			if (@this is IDictionary<TKey, TValue> id) {
 				success = id.TryGetValue(key, out v);
 			}
-#if NET4_0
+#if NET4_5
 			else if (@this is IReadOnlyDictionary<TKey, TValue> id2) {
 				success = id2.TryGetValue(key, out v);
 			}
@@ -96,7 +96,7 @@ namespace OptionalSharp.More {
 			if (@this is IList<T> il) {
 				return il.Count > index ? Some(il[index]) : None(MissingReasons.IndexNotFound);
 			}
-#if NET4_0
+#if NET4_5
 			if (@this is IReadOnlyList<T> il2) {
 				return il2.Count > index ? Some(il2[index]) : None(MissingReasons.IndexNotFound);
 			}

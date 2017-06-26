@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
+    <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{37DFA99C-E730-4E7D-B87D-E8240DF46638}</ProjectGuid>
+    <ProjectGuid>{5C0C6C6C-CDB7-46FC-8495-3D8154184F75}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OptionalSharp.More</RootNamespace>
     <AssemblyName>OptionalSharp.More</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,15 +28,63 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'net461|AnyCPU' ">
+    <OutputPath>bin\net461\</OutputPath>
+    <DefineConstants>TRACE;NET4_6;NET4_0;NET3_5</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\net461\OptionalSharp.More.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'net35|AnyCPU' ">
+    <OutputPath>bin\net35\</OutputPath>
+    <DefineConstants>TRACE;NET3_5</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\net35\OptionalSharp.More.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'net40|AnyCPU' ">
+    <OutputPath>bin\net40\</OutputPath>
+    <DefineConstants>TRACE; NET4_0; NET3_5</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\net40\OptionalSharp.More.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'net45|AnyCPU' ">
+    <OutputPath>bin\net45\</OutputPath>
+    <DefineConstants>TRACE; NET4_0; NET3_5; NET4_5</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <DocumentationFile>bin\net45\OptionalSharp.More.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <ProjectGuid>{37DFA99C-E730-4E7D-B87D-E8240DF46638}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" Condition="'$(TargetFrameworkVersion)' != 'v3.5'" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnumerableExtensions.cs" />
@@ -54,7 +101,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="OptionalSharp.nuspec">
+    <None Include="OptionalSharp.More.nuspec">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

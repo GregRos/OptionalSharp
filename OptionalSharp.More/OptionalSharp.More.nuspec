@@ -3,7 +3,7 @@
 	<metadata>
 		<!-- Required elements-->
 		<id>OptionalSharp.More</id>
-		<version>0.7.0</version>
+		<version>0.8.0</version>
 		<title>
 			Optional#.More
 		</title>
@@ -23,6 +23,9 @@ Extension methods and other objects for integrating the Optional# Optional type 
 			<packageType name="Dependency" />
 		</packageTypes>
 		<dependencies>
+			<group>
+				<dependency id="OptionalSharp" version="0.8.0"></dependency>
+			</group>
 			<group targetFramework="netstandard1.6">
 				<dependency id="System.Reflection.TypeExtensions" version="[4,5)"/>
 				<dependency id="System.Runtime.Serialization.Formatters" version="[4,5)"/>

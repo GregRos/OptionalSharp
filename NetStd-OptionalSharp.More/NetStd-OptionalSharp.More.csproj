@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.6;netstandard1.4</TargetFrameworks>
+    <AssemblyName>OptionalSharp.More</AssemblyName>
+    <RootNamespace>OptionalSharp.More</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.6|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.6\OptionalSharp.More.xml</DocumentationFile>
+    <DefineConstants>TRACE;val</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.4|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.4\OptionalSharp.More.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\OptionalSharp.More\EnumerableExtensions.cs" Link="EnumerableExtensions.cs" />
+    <Compile Include="..\OptionalSharp.More\Errors.cs" Link="Errors.cs" />
+    <Compile Include="..\OptionalSharp.More\MissingReasons.cs" Link="MissingReasons.cs" />
+    <Compile Include="..\OptionalSharp.More\ParallelExtensions.cs" Link="ParallelExtensions.cs" />
+    <Compile Include="..\OptionalSharp.More\Parsing.cs" Link="Parsing.cs" />
+    <Compile Include="..\OptionalSharp.More\Properties\AssemblyInfo.cs" Link="AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.Serialization.Formatters" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetStd-OptionalSharp\NetStd-OptionalSharp.csproj" />
+  </ItemGroup>
+
+</Project>

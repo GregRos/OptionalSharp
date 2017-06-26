@@ -2,7 +2,7 @@
 
 namespace OptionalSharp.More
 {
-	public static class Errors
+	internal static class Errors
 	{
 		public static ArgumentException EnumExpected(Type t) {
 			return new ArgumentException($"The type {t.PrettyName()} was expected to be an enum.");

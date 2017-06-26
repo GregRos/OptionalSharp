@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Reflection;
 using SystemDateTime = System.DateTime;
 using static OptionalSharp.Optional;
 namespace OptionalSharp.More {
@@ -136,6 +137,7 @@ namespace OptionalSharp.More {
 			return bool.TryParse(value, out var x) ? Some(x) : None(MissingReasons.CouldNotBeParsedAs<bool>.Value);
 		}
 
+#if NET4_0
 		/// <summary>
 		/// Tries to parse a <see cref="System.Guid"/>, returning None if the parsing fails.
 		/// </summary>
@@ -164,7 +166,7 @@ namespace OptionalSharp.More {
 			}
 			return System.TimeSpan.TryParseExact(value, format, provider, out var b) ? Some(b) : none;
 		}
-		
+
 		/// <summary>
 		/// Tries to parse an enum of type <typeparamref name="TEnum"/>, returning None if the parsing fails.
 		/// </summary>
@@ -175,11 +177,11 @@ namespace OptionalSharp.More {
 		/// <exception cref="ArgumentException">The type <typeparamref name="TEnum"/> is not an <see cref="System.Enum"/> type.</exception>
 		public static Optional<TEnum> Enum<TEnum>(string value, bool ignoreCase = false)
 			where TEnum : struct {
-			if (!typeof(TEnum).IsEnum) {
+			if (!typeof(Enum).IsAssignableFrom(typeof(TEnum))) {
 				throw Errors.EnumExpected(typeof(TEnum));
 			}
 			return System.Enum.TryParse<TEnum>(value, ignoreCase, out var x) ? Some(x) : None(MissingReasons.CouldNotBeParsedAs<TEnum>.Value);
 		}
-	
+#endif
 	}
 }

@@ -29,6 +29,7 @@
     <Compile Include="..\OptionalSharp\Optional\Optional.cs" Link="Optional.cs" />
     <Compile Include="..\OptionalSharp\Optional\Transforms.cs" Link="Transforms.cs" />
     <Compile Include="..\OptionalSharp\Properties\AssemblyInfo.cs" Link="AssemblyInfo.cs" />
+    <Compile Include="..\OptionalSharp\Properties\VersionInfo.cs" Link="VersionInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>

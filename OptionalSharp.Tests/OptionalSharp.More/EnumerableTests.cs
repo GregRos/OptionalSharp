@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 using Xunit;
 using OptionalSharp.More;
 using static OptionalSharp.Optional;
-namespace OptionalSharp.Tests.OptionalSharp.More
-{
-	public static partial class EnumerableTests
-	{
+
+namespace OptionalSharp.Tests.OptionalSharp.More {
+	public static partial class EnumerableTests {
 		public static class TryFirst {
 			[Fact]
 			static void Simple_Success() {
@@ -19,6 +18,7 @@ namespace OptionalSharp.Tests.OptionalSharp.More
 				var tryFirst = seq.TryFirst();
 				Assert.Equal(tryFirst, Some(1));
 			}
+
 			[Fact]
 			static void Simple_Failure() {
 				var seq = new int[0];
@@ -27,6 +27,7 @@ namespace OptionalSharp.Tests.OptionalSharp.More
 				Assert.Equal(tryFirst, None());
 				Assert.Equal(tryFirst.Reason, MissingReasons.CollectionWasEmpty);
 			}
+
 			[Fact]
 			static void Predicate_Success() {
 				var seq = new int[] {
@@ -34,6 +35,7 @@ namespace OptionalSharp.Tests.OptionalSharp.More
 				};
 				Assert.Equal(seq.TryFirst(x => x % 2 == 0), Some(2));
 			}
+
 			[Fact]
 			static void Predicate_Failure() {
 				var seq = new[] {
@@ -47,34 +49,33 @@ namespace OptionalSharp.Tests.OptionalSharp.More
 
 		public static class TryLast {
 			[Fact]
-			static void Simple_Success()
-			{
+			static void Simple_Success() {
 				var seq = new[] {
 					1, 2, 3
 				};
 				var tryFirst = seq.TryLast();
 				Assert.Equal(tryFirst, Some(3));
 			}
+
 			[Fact]
-			static void Simple_Failure()
-			{
+			static void Simple_Failure() {
 				var seq = new int[0];
 
 				var tryFirst = seq.TryLast();
 				Assert.Equal(tryFirst, None());
 				Assert.Equal(tryFirst.Reason, MissingReasons.CollectionWasEmpty);
 			}
+
 			[Fact]
-			static void Predicate_Success()
-			{
+			static void Predicate_Success() {
 				var seq = new int[] {
 					1, 2, 3, 4
 				};
 				Assert.Equal(seq.TryLast(x => x % 2 == 0), Some(4));
 			}
+
 			[Fact]
-			static void Predicate_Failure()
-			{
+			static void Predicate_Failure() {
 				var seq = new[] {
 					1, 2, 3, 4
 				};
@@ -86,34 +87,33 @@ namespace OptionalSharp.Tests.OptionalSharp.More
 
 		public static class TrySingle {
 			[Fact]
-			static void Simple_Success()
-			{
+			static void Simple_Success() {
 				var seq = new[] {
 					1
 				};
 				var tryFirst = seq.TrySingle();
 				Assert.Equal(tryFirst, Some(1));
 			}
+
 			[Fact]
-			static void Simple_Failure()
-			{
+			static void Simple_Failure() {
 				var seq = new int[0];
 
 				var tryFirst = seq.TrySingle();
 				Assert.Equal(tryFirst, None());
 				Assert.Equal(tryFirst.Reason, MissingReasons.CollectionWasEmpty);
 			}
+
 			[Fact]
-			static void Predicate_Success()
-			{
+			static void Predicate_Success() {
 				var seq = new int[] {
 					1, 2
 				};
 				Assert.Equal(seq.TrySingle(x => x % 2 == 0), Some(2));
 			}
+
 			[Fact]
-			static void Predicate_Failure()
-			{
+			static void Predicate_Failure() {
 				var seq = new[] {
 					1, 2, 3, 4
 				};
@@ -132,8 +132,7 @@ namespace OptionalSharp.Tests.OptionalSharp.More
 			}
 
 			[Fact]
-			static void Simple_MoreThanOneFound()
-			{
+			static void Simple_MoreThanOneFound() {
 				var seq = new[] {
 					2, 2
 				};
@@ -149,6 +148,7 @@ namespace OptionalSharp.Tests.OptionalSharp.More
 				Assert.Equal(x, None());
 				Assert.Equal(x.Reason, MissingReasons.IndexNotFound);
 			}
+
 			[Fact]
 			static void List_Sucess() {
 				var x = new List<int>() {
@@ -158,6 +158,7 @@ namespace OptionalSharp.Tests.OptionalSharp.More
 				}.TryElementAt(2);
 				Assert.Equal(x, Some(3));
 			}
+
 			[Fact]
 			static void Seq_Failure() {
 				var a = new[] {
@@ -167,9 +168,9 @@ namespace OptionalSharp.Tests.OptionalSharp.More
 				Assert.Equal(a, None());
 				Assert.Equal(a.Reason, MissingReasons.IndexNotFound);
 			}
+
 			[Fact]
-			static void Seq_Success()
-			{
+			static void Seq_Success() {
 				var a = new[] {
 					1, 2, 3
 				}.Select(x => x).TryElementAt(1);
@@ -179,7 +180,7 @@ namespace OptionalSharp.Tests.OptionalSharp.More
 		}
 
 		public static class TryGet {
-			
+
 			static Dictionary<int, int> dict = new Dictionary<int, int> {
 				{
 					1, 1
@@ -187,21 +188,27 @@ namespace OptionalSharp.Tests.OptionalSharp.More
 					2, 2
 				}
 			};
-			static IEnumerable<KeyValuePair<int, int>> seq = Enumerable.Range(0, 10).Select(x => new KeyValuePair<int, int>(x, x % 5));
+
+			static IEnumerable<KeyValuePair<int, int>> seq = Enumerable.Range(0, 10)
+				.Select(x => new KeyValuePair<int, int>(x, x % 5));
+
 			[Fact]
 			static void Dictionary_Success() {
 				Assert.Equal(dict.TryKey(2), Some(2));
 			}
+
 			[Fact]
 			static void Dictionary_Failure() {
 				var v = dict.TryKey(3);
 				Assert.Equal(v, None());
 				Assert.Equal(v.Reason, MissingReasons.KeyNotFound);
 			}
+
 			[Fact]
 			static void Seq_Success() {
 				Assert.Equal(seq.TryKey(2), Some(2));
 			}
+
 			[Fact]
 			static void Seq_Failure() {
 				var v = seq.TryKey(11);
@@ -223,7 +230,9 @@ namespace OptionalSharp.Tests.OptionalSharp.More
 
 			[Fact]
 			static void Seq_Choose_Empty() {
-				var x = new[]{ 1, 2, 3}.Choose(y => NoneOf<int>());
+				var x = new[] {
+					1, 2, 3
+				}.Choose(y => NoneOf<int>());
 
 				Assert.Equal(x, new int[0]);
 			}
@@ -266,11 +275,13 @@ namespace OptionalSharp.Tests.OptionalSharp.More
 					0, 1, 2, 3, 4
 				});
 			}
+
 			[Fact]
 			static void None_Result() {
 				var a = NoneOf<int>().SelectMany(x => Enumerable.Range(0, 5));
 				Assert.Equal(a, new int[0]);
 			}
+
 			[Fact]
 			static void Some_ToEmpty() {
 				var a = Some(5).SelectMany(x => new int[0]);
@@ -294,5 +305,33 @@ namespace OptionalSharp.Tests.OptionalSharp.More
 			}
 		}
 
+		public static class TryFirstIndex {
+			[Fact]
+			static void Existing() {
+				var a = Enumerable.Range(0, 10).TryFirstIndex(x => x >= 5);
+				Assert.Equal(a, 5);
+			}
+
+			[Fact]
+			static void NotExisting() {
+				var a = Enumerable.Range(0, 10).TryFirstIndex(x => x > 10);
+				Assert.Equal(a, None());
+			}
+
+		}
+
+		public static class TryLastIndex {
+			[Fact]
+			static void Existing() {
+				var a = Enumerable.Range(0, 10).TryLastIndex(x => x >= 5);
+				Assert.Equal(a, 10);
+			}
+
+			[Fact]
+			static void NotExisting() {
+				var a = Enumerable.Range(0, 10).TryLastIndex(x => x > 10);
+				Assert.Equal(a, None());
+			}
+		}
 	}
 }

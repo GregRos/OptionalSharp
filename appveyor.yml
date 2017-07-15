@@ -4,7 +4,7 @@ install:
 before_build:
  - nuget restore
 build_script:
- - msbuild /verbosity:quiet "OptionalSharp.Tests\OptionalSharp.Tests.csproj"
+ - msbuild /verbosity:quiet "OptionalSharp.sln" /p:Configuration=Release-NET4.6.1
 test_script:
  - cd Scripts
  - cover.cmd

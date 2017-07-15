@@ -3,7 +3,7 @@
 	<metadata>
 		<!-- Required elements-->
 		<id>OptionalSharp</id>
-		<version>0.8.0</version>
+		<version>0.8.2</version>
 		<title>
 			Optional#
 		</title>
@@ -27,6 +27,9 @@ Some of the benefits of this library over some others include comprehensive equa
 			<packageType name="Dependency" />
 		</packageTypes>
 		<dependencies>
+			<group targetFramework="net461">
+				
+			</group>
 			<group targetFramework="netstandard1.6">
 				<dependency id="System.Reflection.TypeExtensions" version="[4,5)"/>
 				<dependency id="System.Runtime.Serialization.Formatters" version="[4,5)"/>
